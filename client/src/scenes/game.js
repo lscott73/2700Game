@@ -5,6 +5,7 @@ import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
 import Zone from '../helpers/zone.js';
+import io from 'socket.io-client';
 
 
 export default class Game extends Phaser.Scene {
@@ -30,6 +31,13 @@ export default class Game extends Phaser.Scene {
         this.dropZone = this.zone.renderZone();
         this.outline = this.zone.renderOutline(this.dropZone);
 
+        // create socket connection
+        this.socket = io('http://localhost:3000');
+        this.socket.on('connect', function () {
+            console.log('Connected!');
+        });
+
+        // basic dealing of cards for now
         this.dealCards = () => {
             console.log('deal cards');
             for (let i = 0; i < 5; i++) {
