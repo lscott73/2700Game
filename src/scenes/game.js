@@ -5,6 +5,11 @@ import CyanCardFront from '../assets/CyanCardFront.png';
 import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
+const sizes = {
+    width: 1000,
+    height: 700
+}
+
 export default class Game extends Phaser.Scene {
     constructor() {
         super({ key: 'Game' });
