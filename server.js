@@ -5,12 +5,31 @@ const io = require('socket.io')(http, {
       origin: '*',
     }
   });
-  
+
+  let players = [];
+
 io.on('connection', function(socket) {
     console.log('a user connected: ' + socket.id);
 
+    // create a new player and add it to our players array
+    players.push(socket.id);
+
+    if (players.length === 1) {
+        io.emit('isPlayerA');
+    }
+
+    socket.on('dealCards', function() {
+        console.log('deal cards 3???');
+        io.emit('dealCards');
+    });
+
+    socket.on('cardPlayed', function(gameObject, isPlayerA) {
+        io.emit('cardPlayed', gameObject, isPlayerA);
+    });
+
     socket.on('disconnect', function() {
         console.log('user disconnected: ' + socket.id);
+        players = players.filter(player => player !== socket.id);
     });
 });
 

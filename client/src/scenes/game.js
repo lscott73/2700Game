@@ -5,7 +5,9 @@ import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
 import Zone from '../helpers/zone.js';
+import Dealer from '../helpers/dealer.js';
 import io from 'socket.io-client';
+
 
 
 export default class Game extends Phaser.Scene {
@@ -25,33 +27,45 @@ export default class Game extends Phaser.Scene {
         // for use within the inner functions below
         let self = this;
 
+        this.isPlayerA = false;
+
+        this.opponentCards = [];
+
+
+
         // create new instance of zone class
         this.zone = new Zone(this);
         // create new dropzone and outline for dropzone
         this.dropZone = this.zone.renderZone();
         this.outline = this.zone.renderOutline(this.dropZone);
 
+        this.dealer = new Dealer(this);
+
+
         // create socket connection
         this.socket = io('http://localhost:3000');
+
         this.socket.on('connect', function () {
             console.log('Connected!');
         });
+        // helps determine if player is player A based on socket emit from server.js
+        this.socket.on('isPlayerA', function () {
+            self.isPlayerA = true;
+        });
 
-        // basic dealing of cards for now
-        this.dealCards = () => {
-            console.log('deal cards');
-            for (let i = 0; i < 5; i++) {
-                let playerCard = new Card(this);
-                playerCard.render(475 + i * 100, 650, 'CyanCardFront');
-            }
-        }
+        this.socket.on('dealCards', function () {
+            console.log('deal cards 2');
+            self.dealer.dealCards();
+            self.dealText.disableInteractive();
+        });
 
         // creates text
         this.dealText = this.add.text(75, 350, ['DEAL CARDS']).setFontSize(18).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
 
         // on click for deal cards
         this.dealText.on('pointerdown', function (pointer) {
-            self.dealCards();
+            console.log('deal cards 1');
+            self.socket.emit('dealCards');
         });
 
         // color change while hovering over text
@@ -71,7 +85,7 @@ export default class Game extends Phaser.Scene {
         });
 
         this.input.on('dragend', function (pointer, gameObject, dropped) {
-            // tint back to normal on drop
+            // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
             gameObject.setTint();
             // make sure it is dropped in a drop zone
             if (!dropped) {
@@ -86,6 +100,10 @@ export default class Game extends Phaser.Scene {
             // set card position to dropzone position
             gameObject.x = dropZone.x - 350 + dropZone.data.values.cards * 50;
             gameObject.y = dropZone.y;
+
+            // reset tint here i guess?
+            gameObject.setTint();
+
             // disable card dragging
             gameObject.disableInteractive();
         });
