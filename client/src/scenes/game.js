@@ -4,6 +4,7 @@ import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
+import Zone from '../helpers/zone.js';
 
 
 export default class Game extends Phaser.Scene {
@@ -23,10 +24,11 @@ export default class Game extends Phaser.Scene {
         // for use within the inner functions below
         let self = this;
 
-        // adds the card image as an interactive object
-        this.card = this.add.image(300, 300, 'CyanCardFront').setScale(0.3, 0.3).setInteractive();
-        //makes the card a draggable object
-        this.input.setDraggable(this.card);
+        // create new instance of zone class
+        this.zone = new Zone(this);
+        // create new dropzone and outline for dropzone
+        this.dropZone = this.zone.renderZone();
+        this.outline = this.zone.renderOutline(this.dropZone);
 
         this.dealCards = () => {
             console.log('deal cards');
@@ -51,6 +53,33 @@ export default class Game extends Phaser.Scene {
         // color change back to original
         this.dealText.on('pointerout', function (pointer) {
             self.dealText.setColor('#00ffff');
+        });
+
+        this.input.on('dragstart', function (pointer, gameObject) {
+            // tint on drag
+            gameObject.setTint(0xffff69);
+            // top on drag
+            self.children.bringToTop(gameObject);
+        });
+
+        this.input.on('dragend', function (pointer, gameObject, dropped) {
+            // tint back to normal on drop
+            gameObject.setTint();
+            // make sure it is dropped in a drop zone
+            if (!dropped) {
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
+            }
+        });
+
+        this.input.on('drop', function (pointer, gameObject, dropZone) {
+            // set data for dropzone
+            dropZone.data.values.cards++;
+            // set card position to dropzone position
+            gameObject.x = dropZone.x - 350 + dropZone.data.values.cards * 50;
+            gameObject.y = dropZone.y;
+            // disable card dragging
+            gameObject.disableInteractive();
         });
 
         // allows basic dragging for gameobjects
