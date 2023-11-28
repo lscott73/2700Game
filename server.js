@@ -19,7 +19,7 @@ io.on('connection', function(socket) {
     }
 
     socket.on('dealCards', function() {
-        console.log('deal cards 3???');
+        // tells all clients to deal cards
         io.emit('dealCards');
     });
 
