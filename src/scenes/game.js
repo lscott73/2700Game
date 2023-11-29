@@ -22,7 +22,7 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         this.load.image('background', BackgroundImg);
-        this.load.image('apple', AppleImg);
+        //this.load.image('apple', AppleImg);
         this.load.image('cyanCardBack', CyanCardBack);
         this.load.image('cyanCardFront', CyanCardFront);
     }
@@ -30,27 +30,30 @@ export default class Game extends Phaser.Scene {
     create() {
         let self = this;
         this.add.image(0, 0, 'background').setOrigin(0, 0);
-        this.add.image(500, 350, 'apple');
+        //this.add.image(500, 350, 'apple');
 
         // center board zone
         this.centerZone = new Zone(this);
-        this.centerBoardZone = this.centerZone.renderZone(500, 170, 800, 200);
+        this.centerBoardZone = this.centerZone.renderZone(500, 170, 700, 200);
         this.outline = this.centerZone.renderOutline(this.centerBoardZone);
+        this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
         // player board zone
         this.boardZone = new Zone(this);
-        this.playerBoardZone = this.boardZone.renderZone(500, 380, 800, 200);
+        this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
+        this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
         // player hand zone
         this.handZone = new Zone(this);
-        this.playerHandZone = this.handZone.renderZone(500, 590, 800, 200);
+        this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
         this.outline = this.handZone.renderOutline(this.playerHandZone);
+        this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
 
 
 
 
         // text emample:
         // creates text
-        this.startText = this.add.text(75, 350, ['START']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
+        this.startText = this.add.text(50, 350, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
             self.startText.setColor('#ff69b4');
@@ -116,7 +119,7 @@ export default class Game extends Phaser.Scene {
                 // set data for dropzone
                 dropZone.data.values.cards++;
                 // set card position to dropzone position
-                gameObject.x = dropZone.x - 400 + (dropZone.data.values.cards * 80);
+                gameObject.x = dropZone.x - 350 + (dropZone.data.values.cards * 80);
                 gameObject.y = dropZone.y;
 
                 // reset tint here i guess?
