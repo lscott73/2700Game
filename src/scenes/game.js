@@ -7,6 +7,7 @@ import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
 import Zone from '../helpers/zone.js';
+import Dealer from '../helpers/dealer.js';
 
 
 
@@ -48,7 +49,7 @@ export default class Game extends Phaser.Scene {
         this.outline = this.handZone.renderOutline(this.playerHandZone);
         this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
 
-
+        this.dealer = new Dealer(this);
 
 
         // text emample:
@@ -61,6 +62,10 @@ export default class Game extends Phaser.Scene {
         // color change back to original
         this.startText.on('pointerout', function (pointer) {
             self.startText.setColor('#00ffff');
+        });
+        // basic deal cards on click
+        this.startText.on('pointerdown', function (pointer) {
+            self.dealer.dealCards();
         });
 
 
@@ -89,6 +94,7 @@ export default class Game extends Phaser.Scene {
             gameObject.x = dragX;
             gameObject.y = dragY;
         });
+
         // handle card pickup events
         this.input.on('dragstart', function (pointer, gameObject) {
             // tint on drag
@@ -96,6 +102,7 @@ export default class Game extends Phaser.Scene {
             // top on drag
             self.children.bringToTop(gameObject);
         });
+
         // handle card drop events
         this.input.on('dragend', function (pointer, gameObject, dropped) {
             // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
@@ -113,7 +120,6 @@ export default class Game extends Phaser.Scene {
         });
 
         this.input.on('drop', function (pointer, gameObject, dropZone) {
-
             // some type of switch statement to check which zone a given card is being dropped into
             if (dropZone === self.playerBoardZone) {
                 // set data for dropzone
@@ -127,9 +133,6 @@ export default class Game extends Phaser.Scene {
                 // disable card dragging
                 gameObject.disableInteractive();
             }
-
-
-
         });
     }
 
