@@ -8,6 +8,7 @@ export default class Dealer {
                 if (deck.length > 0) {
                     let cardData = deck.pop();
                     console.log(cardData);
+                    console.log(deck.length);
                     let playerCard = new Card(scene);
                     playerCard.render(250 + i * 120, 590, cardData);
                 }
