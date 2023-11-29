@@ -5,6 +5,8 @@ import CyanCardFront from '../assets/CyanCardFront.png';
 import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
+import Card from '../helpers/card.js';
+
 
 
 const sizes = {
@@ -48,6 +50,11 @@ export default class Game extends Phaser.Scene {
         // makes cards a draggable object
         this.input.setDraggable(this.newCard);
         this.input.setDraggable(this.newerCard);
+
+        let playerCard = new Card(this);
+        playerCard.render(0, 0, 'cyanCardBack');
+
+        // event handling:
         // handle drag events
         this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
             gameObject.x = dragX;
