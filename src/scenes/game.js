@@ -6,6 +6,7 @@ import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
+import Zone from '../helpers/zone.js';
 
 
 
@@ -31,6 +32,8 @@ export default class Game extends Phaser.Scene {
         this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.add.image(500, 350, 'apple').setOrigin(0, 0);
 
+
+        
         // text emample:
         // creates text
         this.startText = this.add.text(75, 350, ['START']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
@@ -43,6 +46,8 @@ export default class Game extends Phaser.Scene {
             self.startText.setColor('#00ffff');
         });
 
+
+
         // card example:
         // creates cards
         this.newCard = this.add.image(0, 0, 'cyanCardBack').setOrigin(0, 0).setScale(0.25).setInteractive();
@@ -51,8 +56,15 @@ export default class Game extends Phaser.Scene {
         this.input.setDraggable(this.newCard);
         this.input.setDraggable(this.newerCard);
 
-        let playerCard = new Card(this);
-        playerCard.render(0, 0, 'cyanCardBack');
+        // create card with new card class
+        this.betterCard = new Card(this);
+        this.newestCard = this.betterCard.render(300, 0, 'cyanCardBack');
+        // can edit card data values like this
+        this.newestCard.data.values.cashCost = 1;
+        // can access card data values like this
+        console.log(this.newestCard.data.values.cashCost);
+
+
 
         // event handling:
         // handle drag events
