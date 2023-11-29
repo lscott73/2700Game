@@ -53,31 +53,15 @@ export default class Game extends Phaser.Scene {
         this.dealer = new Dealer(this);
 
 
-        // text emample:
-        // creates text
-        this.startText = this.add.text(50, 350, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
-        // color change while hovering over text
-        this.startText.on('pointerover', function (pointer) {
-            self.startText.setColor('#ff69b4');
-        });
-        // color change back to original
-        this.startText.on('pointerout', function (pointer) {
-            self.startText.setColor('#00ffff');
-        });
-        // basic deal cards on click
-        this.startText.on('pointerdown', function (pointer) {
-            self.dealer.dealCards(4);
-        });
 
 
-
-        // // create card with new card class
-        // this.betterCard = new Card(this);
-        // this.newestCard = this.betterCard.render(230, 590, 'cyanCardFront');
-        // // can edit card data values like this
-        // this.newestCard.data.values.cashCost = 1;
-        // // can access card data values like this
-        // console.log(this.newestCard.data.values.cashCost);
+        // create card with new card class
+        this.betterCard = new Card(this);
+        this.newestCard = this.betterCard.render(230, 590, new CardData(0, 0, 1, 0, 'cyanCardFront', 0));
+        // can edit card data values like this
+        this.newestCard.data.values.cashCost = 1;
+        // can access card data values like this
+        console.log(this.newestCard.data.values.cashCost);
 
         // create decks:
         // create deck for player
@@ -93,6 +77,29 @@ export default class Game extends Phaser.Scene {
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
+
+        self.dealer.shuffle(self.playerDeck);
+
+        for (let i = 0; i < 10; i++) {
+            console.log("player deck: card " + i + " has (" + self.playerDeck[i].cashValue + ", " + self.playerDeck[i].leverageValue + ")");
+        }
+
+
+        // text emample:
+        // creates text
+        this.startText = this.add.text(50, 350, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
+        // color change while hovering over text
+        this.startText.on('pointerover', function (pointer) {
+            self.startText.setColor('#ff69b4');
+        });
+        // color change back to original
+        this.startText.on('pointerout', function (pointer) {
+            self.startText.setColor('#00ffff');
+        });
+        // basic deal cards on click
+        this.startText.on('pointerdown', function (pointer) {
+            self.dealer.dealCards(4, self.playerDeck);
+        });
 
 
 
