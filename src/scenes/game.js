@@ -6,6 +6,7 @@ import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 import Card from '../helpers/card.js';
+import CardData from '../helpers/carddata.js';
 import Zone from '../helpers/zone.js';
 import Dealer from '../helpers/dealer.js';
 
@@ -65,18 +66,34 @@ export default class Game extends Phaser.Scene {
         });
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
-            self.dealer.dealCards();
+            self.dealer.dealCards(4);
         });
 
 
 
-        // create card with new card class
-        this.betterCard = new Card(this);
-        this.newestCard = this.betterCard.render(230, 590, 'cyanCardFront');
-        // can edit card data values like this
-        this.newestCard.data.values.cashCost = 1;
-        // can access card data values like this
-        console.log(this.newestCard.data.values.cashCost);
+        // // create card with new card class
+        // this.betterCard = new Card(this);
+        // this.newestCard = this.betterCard.render(230, 590, 'cyanCardFront');
+        // // can edit card data values like this
+        // this.newestCard.data.values.cashCost = 1;
+        // // can access card data values like this
+        // console.log(this.newestCard.data.values.cashCost);
+
+        // create decks:
+        // create deck for player
+        this.playerDeck = [];
+        // create deck for center board
+        this.playerBoardDeck = [];
+        // add basic cards for player
+        for (let i = 0; i < 10; i++) {
+            if (i < 5) {
+                this.playerDeck.push(new CardData(0, 0, 1, 0, 'cyanCardFront', 0)); // sprite would be 'internSprite' or something
+            } else {
+                this.playerDeck.push(new CardData(0, 0, 0, 1, 'cyanCardFront', 0)); // sprite would be 'paralegalSprite' or something
+            }
+            console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
+        }
+
 
 
 
