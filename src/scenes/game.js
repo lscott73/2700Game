@@ -30,10 +30,13 @@ export default class Game extends Phaser.Scene {
     create() {
         let self = this;
         this.add.image(0, 0, 'background').setOrigin(0, 0);
-        this.add.image(500, 350, 'apple').setOrigin(0, 0);
+        this.add.image(500, 350, 'apple');
+
+        this.boardZone = new Zone(this);
+        this.playerBoardZone = this.boardZone.renderZone(500, 400, 800, 210);
+        this.outline = this.boardZone.renderOutline(this.playerBoardZone);
 
 
-        
         // text emample:
         // creates text
         this.startText = this.add.text(75, 350, ['START']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
@@ -50,8 +53,8 @@ export default class Game extends Phaser.Scene {
 
         // card example:
         // creates cards
-        this.newCard = this.add.image(0, 0, 'cyanCardBack').setOrigin(0, 0).setScale(0.25).setInteractive();
-        this.newerCard = this.add.image(150, 0, 'cyanCardFront').setOrigin(0, 0).setScale(0.25).setInteractive();
+        this.newCard = this.add.image(0, 0, 'cyanCardBack').setScale(0.25).setInteractive();
+        this.newerCard = this.add.image(150, 0, 'cyanCardFront').setScale(0.25).setInteractive();
         // makes cards a draggable object
         this.input.setDraggable(this.newCard);
         this.input.setDraggable(this.newerCard);
@@ -83,6 +86,35 @@ export default class Game extends Phaser.Scene {
         this.input.on('dragend', function (pointer, gameObject, dropped) {
             // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
             gameObject.setTint();
+        });
+
+        this.input.on('dragend', function (pointer, gameObject, dropped) {
+            // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
+            gameObject.setTint();
+            // make sure it is dropped in a drop zone
+            if (!dropped) {
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
+            }
+        });
+
+        this.input.on('drop', function (pointer, gameObject, dropZone) {
+
+            // some type of switch statement to check which zone a given card is being dropped into
+            if (dropZone === self.playerBoardZone) {
+                // set data for dropzone
+                dropZone.data.values.cards++;
+                // set card position to dropzone position
+                gameObject.x = dropZone.x - 400 + (dropZone.data.values.cards * 80);
+                gameObject.y = dropZone.y;
+
+                // reset tint here i guess?
+                gameObject.setTint();
+            }
+
+
+            // disable card dragging
+            //gameObject.disableInteractive();
         });
     }
 
