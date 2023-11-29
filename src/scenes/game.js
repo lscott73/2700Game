@@ -98,7 +98,7 @@ export default class Game extends Phaser.Scene {
         });
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
-            self.dealer.dealCards(4, self.playerDeck);
+            self.dealer.dealCards(250, 590, 5, self.playerDeck);
         });
 
 
