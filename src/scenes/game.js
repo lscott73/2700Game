@@ -32,9 +32,20 @@ export default class Game extends Phaser.Scene {
         this.add.image(0, 0, 'background').setOrigin(0, 0);
         this.add.image(500, 350, 'apple');
 
+        // center board zone
+        this.centerZone = new Zone(this);
+        this.centerBoardZone = this.centerZone.renderZone(500, 170, 800, 200);
+        this.outline = this.centerZone.renderOutline(this.centerBoardZone);
+        // player board zone
         this.boardZone = new Zone(this);
-        this.playerBoardZone = this.boardZone.renderZone(500, 400, 800, 210);
+        this.playerBoardZone = this.boardZone.renderZone(500, 380, 800, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
+        // player hand zone
+        this.handZone = new Zone(this);
+        this.playerHandZone = this.handZone.renderZone(500, 590, 800, 200);
+        this.outline = this.handZone.renderOutline(this.playerHandZone);
+
+
 
 
         // text emample:
@@ -110,11 +121,12 @@ export default class Game extends Phaser.Scene {
 
                 // reset tint here i guess?
                 gameObject.setTint();
+                // disable card dragging
+                gameObject.disableInteractive();
             }
 
 
-            // disable card dragging
-            //gameObject.disableInteractive();
+
         });
     }
 
