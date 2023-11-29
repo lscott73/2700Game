@@ -70,17 +70,9 @@ export default class Game extends Phaser.Scene {
 
 
 
-        // card example:
-        // creates cards
-        this.newCard = this.add.image(0, 0, 'cyanCardBack').setScale(0.25).setInteractive();
-        this.newerCard = this.add.image(150, 0, 'cyanCardFront').setScale(0.25).setInteractive();
-        // makes cards a draggable object
-        this.input.setDraggable(this.newCard);
-        this.input.setDraggable(this.newerCard);
-
         // create card with new card class
         this.betterCard = new Card(this);
-        this.newestCard = this.betterCard.render(300, 0, 'cyanCardBack');
+        this.newestCard = this.betterCard.render(230, 590, 'cyanCardFront');
         // can edit card data values like this
         this.newestCard.data.values.cashCost = 1;
         // can access card data values like this
