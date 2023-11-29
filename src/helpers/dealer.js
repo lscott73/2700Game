@@ -2,7 +2,7 @@ import Card from '../helpers/card.js';
 import CardData from '../helpers/carddata.js';
 export default class Dealer {
     constructor(scene) {
-        this.dealCards = (x, y, amount, deck) => {
+        this.dealCards = (x, y, spacing, amount, deck) => {
             // actually deal the cards
             for (let i = 0; i < amount; i++) {
                 if (deck.length > 0) {
@@ -10,7 +10,7 @@ export default class Dealer {
                     console.log(cardData);
                     console.log(deck.length);
                     let playerCard = new Card(scene);
-                    playerCard.render(x + i * 120, y, cardData); //250 + i * 120, 590, cardData
+                    playerCard.render(x + i * spacing, y, cardData);
                 }
             }
         }
@@ -25,6 +25,14 @@ export default class Dealer {
             // combine decks
             deck = deck.concat(deckToEmpty);
             deckToEmpty = [];
+        }
+        this.dealPlayerCards = (deck) => {
+            // deal cards to player
+            this.dealCards(250, 590, 120, 5, deck);
+        }
+        this.dealCenterCards = (deck) => {
+            // deal cards to player
+            this.dealCards(220, 170, 140, 5, deck);
         }
     }
 

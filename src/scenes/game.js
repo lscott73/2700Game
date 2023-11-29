@@ -10,7 +10,9 @@ import CardData from '../helpers/carddata.js';
 import Zone from '../helpers/zone.js';
 import Dealer from '../helpers/dealer.js';
 
-
+// todo next, build discard functionality and then build the center board functionality, 
+//    tracking which cards are where with arrays of card data objects, 
+//    and find some way to get rid of cards on the screen.
 
 const sizes = {
     width: 1000,
@@ -27,6 +29,8 @@ export default class Game extends Phaser.Scene {
         //this.load.image('apple', AppleImg);
         this.load.image('cyanCardBack', CyanCardBack);
         this.load.image('cyanCardFront', CyanCardFront);
+        this.load.image('magentaCardBack', MagentaCardBack);
+        this.load.image('magentaCardFront', MagentaCardFront);
     }
 
     create() {
@@ -34,20 +38,23 @@ export default class Game extends Phaser.Scene {
         this.add.image(0, 0, 'background').setOrigin(0, 0);
         //this.add.image(500, 350, 'apple');
 
-        // center board zone
-        this.centerZone = new Zone(this);
-        this.centerBoardZone = this.centerZone.renderZone(500, 170, 700, 200);
-        this.outline = this.centerZone.renderOutline(this.centerBoardZone);
+        // center board zone, not really a zone
+        // this.centerZone = new Zone(this);
+        // this.centerBoardZone = this.centerZone.renderZone(500, 170, 700, 200);
+        // this.outline = this.centerZone.renderOutline(this.centerBoardZone);
         this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
         // player board zone
         this.boardZone = new Zone(this);
         this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
         this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
-        // player hand zone
-        this.handZone = new Zone(this);
-        this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
-        this.outline = this.handZone.renderOutline(this.playerHandZone);
+        // player Discard zone
+        this.discardZone = new Zone(this);
+        this.playerDiscardZone = this.discardZone.renderZone(925, 590, 140, 200);
+        this.outline = this.discardZone.renderOutline(this.playerDiscardZone);
+        this.startText = this.add.text(870, 590, ['Discard']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
+
+        // player hand zone, not really a zone
         this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
 
         this.dealer = new Dealer(this);
@@ -67,7 +74,8 @@ export default class Game extends Phaser.Scene {
         // create deck for player
         this.playerDeck = [];
         // create deck for center board
-        this.playerBoardDeck = [];
+        this.centerDeck = [];
+
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
@@ -77,15 +85,33 @@ export default class Game extends Phaser.Scene {
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
-
+        // shuffle this initial player deck
         self.dealer.shuffle(self.playerDeck);
-
+        // log the shuffled deck
         for (let i = 0; i < 10; i++) {
             console.log("player deck: card " + i + " has (" + self.playerDeck[i].cashValue + ", " + self.playerDeck[i].leverageValue + ")");
         }
 
+        // add cards for center deck
+        // probably just 30 this.centerDeck.push(new CardData( details of particular card here ));
+        // the following for loop is just for testing
+        for (let i = 0; i < 30; i++) {
+            let random1 = Math.floor(Math.random() * 4);
+            let random2 = Math.floor(Math.random() * 4);
+            let random3 = Math.floor(Math.random() * 4);
+            let random4 = Math.floor(Math.random() * 4);
 
-        // text emample:
+            this.centerDeck.push(new CardData(random1, random2, random3, random4, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
+            console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
+        }
+        self.dealer.shuffle(self.centerDeck);
+        self.dealer.dealCenterCards(self.centerDeck);
+
+
+
+
+
+        // interactive text emample:
         // creates text
         this.startText = this.add.text(50, 350, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
         // color change while hovering over text
@@ -98,7 +124,7 @@ export default class Game extends Phaser.Scene {
         });
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
-            self.dealer.dealCards(250, 590, 5, self.playerDeck);
+            self.dealer.dealPlayerCards(self.playerDeck);
         });
 
 
