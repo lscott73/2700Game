@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'MedievalSharp', cursive;
+            background-color: #f5f5f5;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #8B4513;
+        }
+
+        #arena {
+            background-color: #FFF8DC;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        button {
+            background-color: #8B4513;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .player-info {
+            margin: 20px 0;
+        }
+
+        .card-image {
+            width: 80px;
+            height: 120px;
+            margin: 5px;
+        }
+
+        .hero-image {
+            width: 80px;
+            height: 80px;
+            margin-top: 10px;
+        }
+
+        hr {
+            border: 1px solid #8B4513;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="arena">
+        <h2>Game Arena</h2>
+        <p>Welcome to the epic battle!</p>
+        <p>Player 1 and Player 2 have drawn their heroes. It's time for the showdown!</p>
+        <p>May the strongest hero emerge victorious!</p>
+        
+        <button onclick="drawCards('player1')">Draw Cards Player 1</button>
+        <div class="player-info" id="player1-info"></div>
+        <button onclick="drawCards('player2')">Draw Cards Player 2</button>
+        <div class="player-info" id="player2-info"></div>
+        <button onclick="revealWinner()">Reveal Winner</button>
+        <div id="result"></div>
+        <button onclick="restartGame()">Restart Game</button>
+    </div>
+
+    <script>
+        let player1Cards, player2Cards;
+
+        function drawCards(player) {
+            const deck = generateDeck();
+            if (player === 'player1') {
+                player1Cards = drawThreeCards(deck);
+                displayPlayerInfo('player1', player1Cards);
+            } else {
+                player2Cards = drawThreeCards(deck);
+                displayPlayerInfo('player2', player2Cards);
+            }
+        }
+
+        function displayPlayerInfo(player, cards) {
+            const playerInfoElement = document.getElementById(`${player}-info`);
+            const totalPoints = calculateTotalPoints(cards);
+            const assignedHero = assignHero(totalPoints);
+
+            playerInfoElement.innerHTML = `
+                <p><strong>${player}</strong></p>
+                <p>Drawn Cards:</p>
+                <div>
+                    ${cards.map(card => `<img src="${card.filePath}" alt="${card.rank} of ${card.suit}" class="card-image">`).join('')}
+                </div>
+                <p>Total Points: ${totalPoints}</p>
+                <p>Assigned Hero: ${assignedHero}</p>
+                <p>Hero Image: <img src="assets/images/Heroes/${assignedHero.toLowerCase().replace(/\s/g, '_')}.png" alt="${assignedHero}" class="hero-image"></p>
+            `;
+        }
+
+        function revealWinner() {
+            if (player1Cards && player2Cards) {
+                const player1Points = calculateTotalPoints(player1Cards);
+                const player2Points = calculateTotalPoints(player2Cards);
+                const player1Hero = assignHero(player1Points);
+                const player2Hero = assignHero(player2Points);
+                const winner = determineWinner(player1Hero, player2Hero);
+                displayResult(player1Cards, player1Hero, player1Points, player2Cards, player2Hero, player2Points, winner);
+            } else {
+                alert('Both players need to draw cards before revealing the winner.');
+            }
+        }
+
+        function restartGame() {
+            player1Cards = null;
+            player2Cards = null;
+            clearElement('player1-info');
+            clearElement('player2-info');
+            clearElement('result');
+        }
+
+        function clearElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = '';
+            }
+        }
+
+        function generateDeck() {
+            const folderPath = 'assets/images/Playing Cards/PNG-cards-1.3/';
+            const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+            const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+            const deck = [];
+
+            for (const suit of suits) {
+                for (const rank of ranks) {
+                    const filePath = `${folderPath}${rank.toLowerCase()}_of_${suit.toLowerCase()}.png`;
+                    deck.push({ rank, suit, filePath });
+                }
+            }
+
+            // Shuffle the deck
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+
+            return deck;
+        }
+
+        function drawThreeCards(deck) {
+            return deck.splice(0, 3); // Draw the first three cards
+        }
+
+        function calculateTotalPoints(cards) {
+            let totalPoints = 0;
+
+            for (const card of cards) {
+                if (card.rank === 'A') {
+                    totalPoints += totalPoints + 11 > 21 ? 1 : 11;
+                } else if (['K', 'Q', 'J'].includes(card.rank)) {
+                    totalPoints += 10;
+                } else {
+                    totalPoints += parseInt(card.rank);
+                }
+            }
+
+            return totalPoints;
+        }
+
+        function assignHero(totalPoints) {
+            const heroPointValues = {
+                'Swift Archer': 5,
+                'Stealthy Rogue': 9,
+                'Wind Dancer': 11,
+                'Mystic Mage': 14,
+                'Fire Elemental': 18,
+                'Ice Sorceress': 20,
+                'Armored Knight': 22,
+                'Stone Golem': 26,
+                'Mighty Ogre': 28,
+                'Thunderous Barbarian': 31,
+            };
+
+            for (const hero in heroPointValues) {
+                if (totalPoints <= heroPointValues[hero]) {
+                    return hero;
+                }
+            }
+
+            return 'Thunderous Barbarian'; // Default if totalPoints is greater than 100
+        }
+
+        function determineWinner(player1Hero, player2Hero) {
+            const heroOrder = [
+                'Swift Archer',
+                'Stealthy Rogue',
+                'Wind Dancer',
+                'Mystic Mage',
+                'Fire Elemental',
+                'Ice Sorceress',
+                'Armored Knight',
+                'Stone Golem',
+                'Mighty Ogre',
+                'Thunderous Barbarian',
+            ];
+
+            const player1Rank = heroOrder.indexOf(player1Hero);
+            const player2Rank = heroOrder.indexOf(player2Hero);
+
+            if (player1Rank < player2Rank) {
+                return 'Player 1';
+            } else if (player1Rank > player2Rank) {
+                return 'Player 2';
+            } else {
+                return 'Tie';
+            }
+        }
+
+        function displayResult(player1Cards, player1Hero, player1Points, player2Cards, player2Hero, player2Points, winner) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `
+                <p><strong>Player 1</strong></p>
+                <p>Drawn Cards:</p>
+                <div>
+                    ${player1Cards.map(card => `<img src="${card.filePath}" alt="${card.rank} of ${card.suit}" class="card-image">`).join('')}
+                </div>
+                <p>Total Points: ${player1Points}</p>
+                <p>Assigned Hero: ${player1Hero}</p>
+                <p>Hero Image: <img src="assets/images/Heroes/${player1Hero.toLowerCase().replace(/\s/g, '_')}.png" alt="${player1Hero}" class="hero-image"></p>
+                
+                <hr>
+                
+                <p><strong>Player 2</strong></p>
+                <p>Drawn Cards:</p>
+                <div>
+                    ${player2Cards.map(card => `<img src="${card.filePath}" alt="${card.rank} of ${card.suit}" class="card-image">`).join('')}
+                </div>
+                <p>Total Points: ${player2Points}</p>
+                <p>Assigned Hero: ${player2Hero}</p>
+                <p>Hero Image: <img src="assets/images/Heroes/${player2Hero.toLowerCase().replace(/\s/g, '_')}.png" alt="${player2Hero}" class="hero-image"></p>
+                
+                <hr>
+                
+                <p><strong>Winner: ${winner}</strong></p>
+            `;
+        }
+    </script>
+        </body>
+       
+</body>
+</html>
