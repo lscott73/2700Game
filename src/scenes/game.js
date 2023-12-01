@@ -60,6 +60,8 @@ export default class Game extends Phaser.Scene {
         this.dealer = new Dealer(this);
 
 
+        // temp text example: just for testing
+        this.tempText = this.add.text(50, 20, ['TEMPORARY TEXT']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
 
 
         // create card with new card class
@@ -194,6 +196,15 @@ export default class Game extends Phaser.Scene {
     }
 
     update() {
-
+        // update loop
+        // may only be needed for updating text and numbers on screen!
+        // here are some temp examples:
+        this.tempText.setText(this.playerHand.length);
+        if(this.playerHand.length === 0) {
+            this.tempText.setText("0 cards in hand");
+        }
+        if(this.playerHand.length === 5) {
+            this.tempText.setText("5 card? imagine that");
+        }
     }
 }
