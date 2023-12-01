@@ -118,7 +118,7 @@ export default class Game extends Phaser.Scene {
             console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
         }
         self.dealer.shuffle(self.centerDeck);
-        self.dealer.dealCenterCards(self.centerDeck);
+        self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
 
 
 
@@ -137,9 +137,7 @@ export default class Game extends Phaser.Scene {
         });
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
-            self.dealer.dealPlayerCards(self.playerDeck);
-            // temp testing funciton call
-            self.dealer.moveCard(self.playerDeck[0], self.playerDeck, self.playerHand);
+            self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
             console.log("player hand length: " + self.playerHand.length);
             console.log("player deck length: " + self.playerDeck.length);
         });
