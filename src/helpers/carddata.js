@@ -1,11 +1,11 @@
 export  default class CardData {
-    constructor(cashCost, leverageCost, cashValue, leverageValue, powerValue, sprite, state) {
+    constructor(cashCost, leverageCost, cashValue, leverageValue, powerValue, cashPenalty, sprite, state) {
     this.cashCost = cashCost; // Cash cost for hiring this employee card
     this.leverageCost = leverageCost; // Leverage cost for defeating this lawsuit card
     this.cashValue = cashValue; // Cash bonus for playing this card
     this.leverageValue = leverageValue; // Leverage bonus for playing this card
     this.powerValue = powerValue; // Power bonus for playing this card
-    this.cashPenalty; // Cash penalty for ending the turn with this card in the center board
+    this.cashPenalty = cashPenalty; // Cash penalty for ending the turn with this card in the center board
     this.sprite = sprite; // sprite is a string that is the name of the sprite
     this.state = state; // 0 = Center Deck, 1 = Center Board, 2 = Center Discard, 3 = Player Deck, 4 = Player Discard, 5 = Player Hand, 6 = Player Board, 7 = Removed
     }
@@ -24,6 +24,14 @@ export  default class CardData {
 
     getLeverageValue() {
         return this.leverageValue;
+    }
+
+    getPowerValue() {
+        return this.powerValue;
+    }
+
+    getCashPenalty() {
+        return this.cashPenalty;
     }
 
     getSprite() {
@@ -48,6 +56,14 @@ export  default class CardData {
 
     setLeverageValue(leverageValue) {
         this.leverageValue = leverageValue;
+    }
+
+    setPowerValue(powerValue) {
+        this.powerValue = powerValue;
+    }
+
+    setCashPenalty(cashPenalty) {
+        this.cashPenalty = cashPenalty;
     }
 
     setSprite(sprite) {
