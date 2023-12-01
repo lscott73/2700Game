@@ -15,7 +15,7 @@ export default class Dealer {
             }
         }
 
-        this.moveCard = (cardData, startDeck, endDeck) => { // moves a card to a new location
+        this.moveCard = (cardData, startDeck, endDeck) => { // moves a particular cardData object out of startDeck and into endDeck
             console.log("find index? " + startDeck.findIndex((element) => element === cardData));
             let cardIndex = startDeck.findIndex((element) => element === cardData);
             if (cardIndex === -1) {
@@ -43,7 +43,7 @@ export default class Dealer {
             // deal cards to player
             this.dealCards(250, 590, 120, 5, deck);
         }
-        
+
         this.dealCenterCards = (deck) => {
             // deal cards to player
             this.dealCards(220, 170, 140, 5, deck);
