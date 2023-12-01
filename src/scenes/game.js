@@ -1,7 +1,7 @@
 import BackgroundImg from '../assets/bg.png'
 import AppleImg from '../assets/apple.png'
 import CyanCardBack from '../assets/CyanCardBack.png';
-import CyanCardFront from '../assets/CyanCardFront.png';
+import ExampleCardFront from '../assets/ExampleCardFront.png';
 import MagentaCardBack from '../assets/MagentaCardBack.png';
 import MagentaCardFront from '../assets/MagentaCardFront.png';
 
@@ -15,8 +15,8 @@ import Dealer from '../helpers/dealer.js';
 //    and find some way to get rid of cards on the screen.
 
 const sizes = {
-    width: 1200,
-    height: 800
+    width: 1000,
+    height: 700
 }
 
 export default class Game extends Phaser.Scene {
@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('background', BackgroundImg);
         //this.load.image('apple', AppleImg);
         this.load.image('cyanCardBack', CyanCardBack);
-        this.load.image('cyanCardFront', CyanCardFront);
+        this.load.image('cxampleCardFront', ExampleCardFront);
         this.load.image('magentaCardBack', MagentaCardBack);
         this.load.image('magentaCardFront', MagentaCardFront);
     }
@@ -64,7 +64,7 @@ export default class Game extends Phaser.Scene {
 
         // create card with new card class
         this.betterCard = new Card(this);
-        this.newestCard = this.betterCard.render(230, 590, new CardData(0, 0, 1, 0, 0, 0, 'cyanCardFront', 5));
+        this.newestCard = this.betterCard.render(230, 590, new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 5));
         // can edit card data values like this
         this.newestCard.data.values.cashCost = 1;
         // can access card data values like this
@@ -79,9 +79,9 @@ export default class Game extends Phaser.Scene {
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
-                this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cyanCardFront', 3)); // sprite would be 'internSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
-                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cyanCardFront', 3)); // sprite would be 'paralegalSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
