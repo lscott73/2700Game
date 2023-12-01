@@ -1,11 +1,13 @@
 export  default class CardData {
-    constructor(cashCost, leverageCost, cashValue, leverageValue, sprite, active) {
-    this.cashCost = cashCost;
-    this.leverageCost = leverageCost;
-    this.cashValue = cashValue;
-    this.leverageValue = leverageValue;
-    this.sprite = sprite;
-    this.active = active;
+    constructor(cashCost, leverageCost, cashValue, leverageValue, powerValue, sprite, state) {
+    this.cashCost = cashCost; // Cash cost for hiring this employee card
+    this.leverageCost = leverageCost; // Leverage cost for defeating this lawsuit card
+    this.cashValue = cashValue; // Cash bonus for playing this card
+    this.leverageValue = leverageValue; // Leverage bonus for playing this card
+    this.powerValue = powerValue; // Power bonus for playing this card
+    this.cashPenalty; // Cash penalty for ending the turn with this card in the center board
+    this.sprite = sprite; // sprite is a string that is the name of the sprite
+    this.state = state; // 0 = Center Deck, 1 = Center Board, 2 = Center Discard, 3 = Player Deck, 4 = Player Discard, 5 = Player Hand, 6 = Player Board, 7 = Removed
     }
 
     getCashCost() {
@@ -52,7 +54,7 @@ export  default class CardData {
         this.sprite = sprite;
     }
 
-    setActive(active) {
-        this.active = active;
+    setState(state) {
+        this.state = state;
     }
 }
