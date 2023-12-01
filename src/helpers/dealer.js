@@ -14,20 +14,36 @@ export default class Dealer {
                 }
             }
         }
+
+        this.moveCard = (cardData, startDeck, endDeck) => { // moves a card to a new location
+            console.log("find index? " + startDeck.findIndex((element) => element === cardData));
+            let cardIndex = startDeck.findIndex((element) => element === cardData);
+            if (cardIndex === -1) {
+                console.log("card not found");
+                return;
+            } else {
+                endDeck.push(startDeck[cardIndex]);
+                startDeck.pop(cardIndex);
+            }
+        }
+
         this.shuffle = (deck) => { // shuffle the deck
             for (let i = deck.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [deck[i], deck[j]] = [deck[j], deck[i]];
             }
         }
+
         this.combineDecks = (deck, deckToEmpty) => { // combine decks
             deck = deck.concat(deckToEmpty);
             deckToEmpty = [];
         }
+
         this.dealPlayerCards = (deck) => {
             // deal cards to player
             this.dealCards(250, 590, 120, 5, deck);
         }
+        
         this.dealCenterCards = (deck) => {
             // deal cards to player
             this.dealCards(220, 170, 140, 5, deck);

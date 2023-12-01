@@ -76,6 +76,18 @@ export default class Game extends Phaser.Scene {
         // create deck for center board
         this.centerDeck = [];
 
+        // create board areas:
+        // create board area for player hand
+        this.playerHand = [];
+        // create board area for player board
+        this.playerBoard = [];
+        // create board area for center board
+        this.centerBoard = [];
+        // create board area for player discard
+        this.playerDiscard = [];
+        // create board area for center discard
+        this.centerDiscard = [];
+
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
@@ -126,6 +138,10 @@ export default class Game extends Phaser.Scene {
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
             self.dealer.dealPlayerCards(self.playerDeck);
+            // temp testing funciton call
+            self.dealer.moveCard(self.playerDeck[0], self.playerDeck, self.playerHand);
+            console.log("player hand length: " + self.playerHand.length);
+            console.log("player deck length: " + self.playerDeck.length);
         });
 
 
