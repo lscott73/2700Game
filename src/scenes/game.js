@@ -93,9 +93,9 @@ export default class Game extends Phaser.Scene {
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
-                this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
+                this.playerDeck.push(new CardData(i, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
-                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
+                this.playerDeck.push(new CardData(0, i, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
@@ -160,6 +160,7 @@ export default class Game extends Phaser.Scene {
             gameObject.setTint(0xffff69);
             // top on drag
             self.children.bringToTop(gameObject);
+            console.log(gameObject.data.values.cardData);
         });
 
         // handle card drop events

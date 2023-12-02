@@ -5,7 +5,7 @@ export default class Card {
         this.render = (x, y, cardData) => {
             let card = scene.add.image(x, y, cardData.getSprite()).setScale(0.25, 0.25).setInteractive();
             scene.input.setDraggable(card);
-            card.setData({cardData: cardData, state: cardData.state});
+            card.setData({"cardData": cardData, "state": cardData.state});
             return card;
         }
     }
