@@ -23,7 +23,8 @@ export default class Dealer {
                 return;
             } else {
                 endDeck.push(startDeck[cardIndex]);
-                startDeck.pop(cardIndex);
+                startDeck.splice(cardIndex, 1);
+                console.log("card moved, new start deck length: " + startDeck.length + ", new end deck length: " + endDeck.length);
             }
         }
 

@@ -140,8 +140,15 @@ export default class Game extends Phaser.Scene {
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
             self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
+            // temp logs
             console.log("player hand length: " + self.playerHand.length);
             console.log("player deck length: " + self.playerDeck.length);
+            console.log("player discard length: " + self.playerDiscard.length);
+            console.log("center board length: " + self.centerBoard.length);
+            console.log("center deck length: " + self.centerDeck.length);
+            console.log("center discard length: " + self.centerDiscard.length);
+            console.log("player board length: " + self.playerBoard.length);
+
         });
 
 
@@ -160,6 +167,7 @@ export default class Game extends Phaser.Scene {
             gameObject.setTint(0xffff69);
             // top on drag
             self.children.bringToTop(gameObject);
+            console.log("Setting this card down in the player board:");
             console.log(gameObject.data.values.cardData);
         });
 
@@ -192,6 +200,13 @@ export default class Game extends Phaser.Scene {
                 gameObject.setTint();
                 // disable card dragging
                 gameObject.disableInteractive();
+                // move card to player board
+                self.dealer.moveCard(gameObject.data.values.cardData, self.playerHand, self.playerBoard);
+                // change card state to player board
+                console.log("moving a card from state: " + gameObject.data.values.cardData.state);
+                gameObject.data.values.cardData.state = 6;
+                console.log("to state: " + gameObject.data.values.cardData.state);
+                console.log(gameObject.data.values.cardData);
             }
         });
     }
