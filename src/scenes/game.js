@@ -200,13 +200,14 @@ export default class Game extends Phaser.Scene {
                 gameObject.setTint();
                 // disable card dragging
                 gameObject.disableInteractive();
-                // move card to player board
+                // move card from player hand to player board
                 self.dealer.moveCard(gameObject.data.values.cardData, self.playerHand, self.playerBoard);
                 // change card state to player board
                 console.log("moving a card from state: " + gameObject.data.values.cardData.state);
                 gameObject.data.values.cardData.state = 6;
                 console.log("to state: " + gameObject.data.values.cardData.state);
                 console.log(gameObject.data.values.cardData);
+                /// this all only works if the card starts in the player hand. I need to do a check for the card state before dealing with the move!
             }
         });
     }
