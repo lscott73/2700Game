@@ -156,6 +156,11 @@ export default class Game extends Phaser.Scene {
                     self.dealer.moveCard(self.playerBoard[0], self.playerBoard, self.playerDiscard);
                 }
             }
+            // send center board to discard
+            let centerBoardAmount = self.centerBoard.length;
+            for (let i = 0; i < centerBoardAmount; i++) {
+                self.dealer.moveCard(self.centerBoard[0], self.centerBoard, self.centerDiscard);
+            }
 
             // handle discard visuals
             let discardAmount = self.discardList.length;
@@ -169,14 +174,14 @@ export default class Game extends Phaser.Scene {
             // start of turn actions:
             self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
             // temp logs
-            console.log("player hand length: " + self.playerHand.length);
-            console.log(self.playerHand);
+            // console.log("player hand length: " + self.playerHand.length);
+            // console.log(self.playerHand);
             // console.log("player deck length: " + self.playerDeck.length);
-            console.log("player discard length: " + self.playerDiscard.length);
-            console.log(self.playerDiscard);
+            // console.log("player discard length: " + self.playerDiscard.length);
+            // console.log(self.playerDiscard);
             // console.log("center board length: " + self.centerBoard.length);
             // console.log("center deck length: " + self.centerDeck.length);
-            console.log("center discard length: " + self.centerDiscard.length);
+            // console.log("center discard length: " + self.centerDiscard.length);
             // console.log("player board length: " + self.playerBoard.length);
 
 

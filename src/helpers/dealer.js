@@ -38,13 +38,7 @@ export default class Dealer {
                 [deck[i], deck[j]] = [deck[j], deck[i]];
             }
         }
-
-        this.combineDecks = (deck, deckToEmpty) => { // combine decks
-            deck = deck.concat(deckToEmpty);
-            deckToEmpty = [];
-            console.log("deck length: " + deck.length + ", deckToEmpty length: " + deckToEmpty.length);
-        }
-
+        
         this.stateLookup = (endDeck) => { // returns the state of the deck
             if (endDeck === scene.centerDeck) {
                 return 0;
