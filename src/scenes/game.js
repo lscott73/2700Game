@@ -289,8 +289,6 @@ export default class Game extends Phaser.Scene {
 
             // get card data
             let thisCard = gameObject.data.values.cardData;
-            console.log("this card is being dropped:");
-            console.log(thisCard);
             // reset tint from drag
             gameObject.setTint();
 
@@ -306,16 +304,14 @@ export default class Game extends Phaser.Scene {
                 // disable card dragging
                 gameObject.disableInteractive();
                 // move card from player hand to player board
-                console.log("moving a card from state: " + gameObject.data.values.cardData.state);
                 self.dealer.moveCard(gameObject.data.values.cardData, self.playerHand, self.playerBoard);
-                console.log("to state: " + gameObject.data.values.cardData.state);
-                console.log(gameObject.data.values.cardData);
+                // console.log(gameObject.data.values.cardData);
 
                 // add car bonuses to player pools
                 self.powerPool += thisCard.powerValue;
                 self.leveragePool += thisCard.leverageValue;
                 self.cashPool += thisCard.cashValue;
-                
+
             } else if (dropZone === self.playerBoardZone && thisCard.state === 1) { // purchase card from board
                 if (self.cashPool >= thisCard.cashCost && self.leveragePool >= thisCard.leverageCost) {
                     self.cashPool -= thisCard.cashCost;
@@ -324,7 +320,7 @@ export default class Game extends Phaser.Scene {
                     if (thisCard.leverageCost > 0) {
                         self.powerPool += thisCard.powerValue;
                     }
-                    console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
+                    //console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
                     // set data for dropzone
                     dropZone.data.values.cards++;
                     // set card position to dropzone position
@@ -334,7 +330,7 @@ export default class Game extends Phaser.Scene {
                     gameObject.disableInteractive();
                     // move card from player hand to player board
                     self.dealer.moveCard(gameObject.data.values.cardData, self.centerBoard, self.playerBoard);
-                    console.log(gameObject.data.values.cardData);
+                    //console.log(gameObject.data.values.cardData);
 
                 } else {
 

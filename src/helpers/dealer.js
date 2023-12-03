@@ -27,7 +27,7 @@ export default class Dealer {
                 cardData.state = this.stateLookup(endDeck);
                 endDeck.push(startDeck[cardIndex]);
                 startDeck.splice(cardIndex, 1);
-                console.log(cardData);
+                //console.log(cardData);
                 console.log(" ^ card moved, from (" + this.stateLookup(startDeck) + ") start deck (length: " + startDeck.length 
                 + "), to (" + this.stateLookup(endDeck) + ") end deck (length: " + endDeck.length + ")");
             }
