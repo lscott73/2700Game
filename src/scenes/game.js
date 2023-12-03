@@ -10,9 +10,6 @@ import CardData from '../helpers/carddata.js';
 import Zone from '../helpers/zone.js';
 import Dealer from '../helpers/dealer.js';
 
-// todo next, build discard functionality and then build the center board functionality, 
-//    tracking which cards are where with arrays of card data objects, 
-//    and find some way to get rid of cards on the screen.
 
 const sizes = {
     width: 1000,
