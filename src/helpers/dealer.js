@@ -7,19 +7,18 @@ export default class Dealer {
             for (let i = 0; i < amount; i++) {
                 if (startDeck.length > 0) {
                     let cardData = startDeck[0];
-                    console.log(cardData);
+                    // console.log(cardData);
                     this.moveCard(cardData, startDeck, endDeck);
                     let playerCard = new Card(scene);
-                    let renderedCard = playerCard.render(x + i * spacing, y, cardData);
+                    let renderedCard = playerCard.render(x + (endDeck.length - 1) * spacing, y, cardData);
                     scene.discardList.push(renderedCard);
-                    console.log("this doesn't work: " + scene.discardList[i].data.get("cardData").cashCost);
-                    console.log(scene.discardList);
+                    //console.log(scene.discardList);
                 }
             }
         }
 
         this.moveCard = (cardData, startDeck, endDeck) => { // moves a particular cardData object out of startDeck and into endDeck
-            console.log("find index? " + startDeck.findIndex((element) => element === cardData));
+            //console.log("find index? " + startDeck.findIndex((element) => element === cardData));
             let cardIndex = startDeck.findIndex((element) => element === cardData);
             if (cardIndex === -1) {
                 console.log("card not found");
@@ -28,7 +27,9 @@ export default class Dealer {
                 cardData.state = this.stateLookup(endDeck);
                 endDeck.push(startDeck[cardIndex]);
                 startDeck.splice(cardIndex, 1);
-                console.log("card moved, new start deck length: " + startDeck.length + ", new end deck length: " + endDeck.length);
+                console.log(cardData);
+                console.log(" ^ card moved, from (" + this.stateLookup(startDeck) + ") start deck (length: " + startDeck.length 
+                + "), to (" + this.stateLookup(endDeck) + ") end deck (length: " + endDeck.length + ")");
             }
         }
 
@@ -36,6 +37,12 @@ export default class Dealer {
             for (let i = deck.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+        }
+
+        this.emptyDeckToDeck = (startDeck, endDeck) => { // moves all cards from startDeck to endDeck
+            while (startDeck.length > 0) {
+                this.moveCard(startDeck[0], startDeck, endDeck);
             }
         }
         

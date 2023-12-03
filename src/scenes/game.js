@@ -94,9 +94,9 @@ export default class Game extends Phaser.Scene {
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
-                this.playerDeck.push(new CardData(0, 0, i+1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
-                this.playerDeck.push(new CardData(0, 0, 0, i+1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
@@ -117,7 +117,7 @@ export default class Game extends Phaser.Scene {
             let random4 = Math.floor(Math.random() * 4);
             let random5 = Math.floor(Math.random() * 4);
 
-            this.centerDeck.push(new CardData(random1, random2, random3, random4, 0, 0, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
+            this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 0, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
             console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
         }
         self.dealer.shuffle(self.centerDeck);
@@ -138,16 +138,16 @@ export default class Game extends Phaser.Scene {
         this.startText.on('pointerout', function (pointer) {
             self.startText.setColor('#00ffff');
         });
-        // basic deal cards on click
+
+        // end turn and start new turn!
         this.startText.on('pointerdown', function (pointer) {
             // end of turn actions:
             // discard cards
+
             // send player hand to discard
-            let handAmount = self.playerHand.length;
-            for (let i = 0; i < handAmount; i++) {
-                self.dealer.moveCard(self.playerHand[0], self.playerHand, self.playerDiscard);
-            }
-            // send player board to discard
+            self.dealer.emptyDeckToDeck(self.playerHand, self.playerDiscard);
+
+            // send player board to discard -- can't use empty deck since some cards go to the center discard while most go to the player discard
             let boardAmount = self.playerBoard.length;
             for (let i = 0; i < boardAmount; i++) {
                 if (self.playerBoard[0].leverageCost > 0) {
@@ -156,33 +156,50 @@ export default class Game extends Phaser.Scene {
                     self.dealer.moveCard(self.playerBoard[0], self.playerBoard, self.playerDiscard);
                 }
             }
+
             // send center board to discard
-            let centerBoardAmount = self.centerBoard.length;
-            for (let i = 0; i < centerBoardAmount; i++) {
-                self.dealer.moveCard(self.centerBoard[0], self.centerBoard, self.centerDiscard);
-            }
+            self.dealer.emptyDeckToDeck(self.centerBoard, self.centerDiscard);
 
             // handle discard visuals
-            let discardAmount = self.discardList.length;
-            for (let i = 0; i < discardAmount; i++) {
+            while (self.discardList.length > 0) {
                 console.log("destroying a card");
                 self.discardList[0].destroy(true);
                 self.discardList.splice(0, 1);
             }
             self.playerBoardZone.data.values.cards = 0;
 
+
+
             // start of turn actions:
+            
+            if (self.playerDeck.length < 5) {
+                let deckAmount = self.playerDiscard.length;
+                let drawAfterShuffle = 5 - deckAmount;
+                self.dealer.dealCards(250, 590, 120, deckAmount, self.playerDeck, self.playerHand);
+                // shuffle player discard into player deck
+                self.dealer.emptyDeckToDeck(self.playerDiscard, self.playerDeck);
+                self.dealer.shuffle(self.playerDeck);
+
+                // then deal remaining amount of cards
+                self.dealer.dealCards(250, 590, 120, drawAfterShuffle, self.playerDeck, self.playerHand);
+            }
+            // deal cards to player
             self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
+            // deal cards to center
+            self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
+
+
+
             // temp logs
-            // console.log("player hand length: " + self.playerHand.length);
+            console.log("player hand length: " + self.playerHand.length);
             // console.log(self.playerHand);
-            // console.log("player deck length: " + self.playerDeck.length);
-            // console.log("player discard length: " + self.playerDiscard.length);
+            console.log("player deck length: " + self.playerDeck.length);
+            console.log("player discard length: " + self.playerDiscard.length);
             // console.log(self.playerDiscard);
-            // console.log("center board length: " + self.centerBoard.length);
-            // console.log("center deck length: " + self.centerDeck.length);
-            // console.log("center discard length: " + self.centerDiscard.length);
-            // console.log("player board length: " + self.playerBoard.length);
+            console.log("center board length: " + self.centerBoard.length);
+            console.log("center deck length: " + self.centerDeck.length);
+            console.log("center discard length: " + self.centerDiscard.length);
+            console.log("player board length: " + self.playerBoard.length);
 
 
         });
@@ -252,9 +269,10 @@ export default class Game extends Phaser.Scene {
 
                 //gameObject.destroy(true);
             } else if (dropZone === self.playerBoardZone && thisCard.state === 1) { // purchase card from board
-                if (self.cashPool >= 3) {
+                if (self.cashPool >= thisCard.cashCost && self.leveragePool >= thisCard.leverageCost) {
 
-                    self.cashPool -= 3;
+                    self.cashPool -= thisCard.cashCost;
+                    self.leveragePool -= thisCard.leverageCost;
                     console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
                     // set data for dropzone
                     dropZone.data.values.cards++;
@@ -264,17 +282,14 @@ export default class Game extends Phaser.Scene {
                     // disable card dragging
                     gameObject.disableInteractive();
                     // move card from player hand to player board
-                    console.log("moving a card from state: " + gameObject.data.values.cardData.state);
                     self.dealer.moveCard(gameObject.data.values.cardData, self.centerBoard, self.playerBoard);
-                    console.log("to state: " + gameObject.data.values.cardData.state);
                     console.log(gameObject.data.values.cardData);
 
                 } else {
 
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
-                    console.log("not enough cash");
-
+                    console.log("not enough cash or leverage to purchase this card");
                 }
 
             } else if (dropZone === self.playerHandZone && thisCard.state === 5) {
@@ -282,8 +297,6 @@ export default class Game extends Phaser.Scene {
             } else {
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
-                    self.cashPool++;
-                    self.leveragePool++;
             }
         });
     }
@@ -292,12 +305,9 @@ export default class Game extends Phaser.Scene {
         // update loop
         // may only be needed for updating text and numbers on screen!
         // here are some temp examples:
-        this.tempText.setText(this.playerHand.length);
-        if(this.playerHand.length === 0) {
-            this.tempText.setText("0 cards in hand");
-        }
-        if(this.playerHand.length === 5) {
-            this.tempText.setText("5 card? imagine that");
+        this.tempText.setText(this.playerDeck.length + " cards in player deck");
+        if(this.playerDeck.length === 5) {
+            this.tempText.setText("5 cards? imagine that");
         }
 
 
