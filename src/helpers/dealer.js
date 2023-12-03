@@ -10,7 +10,10 @@ export default class Dealer {
                     console.log(cardData);
                     this.moveCard(cardData, startDeck, endDeck);
                     let playerCard = new Card(scene);
-                    playerCard.render(x + i * spacing, y, cardData);
+                    let renderedCard = playerCard.render(x + i * spacing, y, cardData);
+                    scene.discardList.push(renderedCard);
+                    console.log("this doesn't work: " + scene.discardList[i].data.get("cardData").cashCost);
+                    console.log(scene.discardList);
                 }
             }
         }
@@ -39,6 +42,7 @@ export default class Dealer {
         this.combineDecks = (deck, deckToEmpty) => { // combine decks
             deck = deck.concat(deckToEmpty);
             deckToEmpty = [];
+            console.log("deck length: " + deck.length + ", deckToEmpty length: " + deckToEmpty.length);
         }
 
         this.stateLookup = (endDeck) => { // returns the state of the deck

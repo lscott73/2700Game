@@ -85,15 +85,18 @@ export default class Game extends Phaser.Scene {
         this.leverageText = this.add.text(900, 120, this.leveragePool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ff0000');
         this.cashText = this.add.text(900, 220, this.cashPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ff00');
 
+        // create discarding array:
+        this.discardList = [];
+
 
 
 
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
-                this.playerDeck.push(new CardData(i, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
+                this.playerDeck.push(new CardData(0, 0, i+1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
-                this.playerDeck.push(new CardData(0, i, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 0, i+1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
@@ -137,15 +140,45 @@ export default class Game extends Phaser.Scene {
         });
         // basic deal cards on click
         this.startText.on('pointerdown', function (pointer) {
+            // end of turn actions:
+            // discard cards
+            // send player hand to discard
+            let handAmount = self.playerHand.length;
+            for (let i = 0; i < handAmount; i++) {
+                self.dealer.moveCard(self.playerHand[0], self.playerHand, self.playerDiscard);
+            }
+            // send player board to discard
+            let boardAmount = self.playerBoard.length;
+            for (let i = 0; i < boardAmount; i++) {
+                if (self.playerBoard[0].leverageCost > 0) {
+                    self.dealer.moveCard(self.playerBoard[0], self.playerBoard, self.centerDiscard);
+                } else {
+                    self.dealer.moveCard(self.playerBoard[0], self.playerBoard, self.playerDiscard);
+                }
+            }
+
+            // handle discard visuals
+            let discardAmount = self.discardList.length;
+            for (let i = 0; i < discardAmount; i++) {
+                console.log("destroying a card");
+                self.discardList[0].destroy(true);
+                self.discardList.splice(0, 1);
+            }
+            self.playerBoardZone.data.values.cards = 0;
+
+            // start of turn actions:
             self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
             // temp logs
             console.log("player hand length: " + self.playerHand.length);
-            console.log("player deck length: " + self.playerDeck.length);
+            console.log(self.playerHand);
+            // console.log("player deck length: " + self.playerDeck.length);
             console.log("player discard length: " + self.playerDiscard.length);
-            console.log("center board length: " + self.centerBoard.length);
-            console.log("center deck length: " + self.centerDeck.length);
+            console.log(self.playerDiscard);
+            // console.log("center board length: " + self.centerBoard.length);
+            // console.log("center deck length: " + self.centerDeck.length);
             console.log("center discard length: " + self.centerDiscard.length);
-            console.log("player board length: " + self.playerBoard.length);
+            // console.log("player board length: " + self.playerBoard.length);
+
 
         });
 
@@ -207,6 +240,12 @@ export default class Game extends Phaser.Scene {
                 console.log("to state: " + gameObject.data.values.cardData.state);
                 console.log(gameObject.data.values.cardData);
 
+                // add car bonuses to player pools
+                self.powerPool += thisCard.powerValue;
+                self.leveragePool += thisCard.leverageValue;
+                self.cashPool += thisCard.cashValue;
+
+                //gameObject.destroy(true);
             } else if (dropZone === self.playerBoardZone && thisCard.state === 1) { // purchase card from board
                 if (self.cashPool >= 3) {
 
