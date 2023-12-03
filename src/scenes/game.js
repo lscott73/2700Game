@@ -89,23 +89,22 @@ export default class Game extends Phaser.Scene {
         this.discardList = [];
 
 
-
-
+        // create cardData objects:
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
             if (i < 5) {
                 this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
-                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'paralegalSprite' or something
+                this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3));
             }
             console.log("player deck: add a card with (" + this.playerDeck[i].cashValue + ", " + this.playerDeck[i].leverageValue + ")");
         }
         // shuffle this initial player deck
         self.dealer.shuffle(self.playerDeck);
         // log the shuffled deck
-        for (let i = 0; i < 10; i++) {
-            console.log("player deck: card " + i + " has (" + self.playerDeck[i].cashValue + ", " + self.playerDeck[i].leverageValue + ")");
-        }
+        // for (let i = 0; i < 10; i++) {
+        //     console.log("player deck: card " + i + " has (" + self.playerDeck[i].cashValue + ", " + self.playerDeck[i].leverageValue + ")");
+        // }
 
         // add cards for center deck
         // probably just 30 this.centerDeck.push(new CardData( details of particular card here ));
@@ -117,10 +116,14 @@ export default class Game extends Phaser.Scene {
             let random4 = Math.floor(Math.random() * 4);
             let random5 = Math.floor(Math.random() * 4);
 
-            this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 0, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
+            this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 1, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
             console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
         }
         self.dealer.shuffle(self.centerDeck);
+
+        // initial deal of cards
+        // deal cards to player
+        self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
         self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
 
 
@@ -142,12 +145,15 @@ export default class Game extends Phaser.Scene {
         // end turn and start new turn!
         this.startText.on('pointerdown', function (pointer) {
             // end of turn actions:
+            // check for power penalties
+            for (let i = 0; i < self.centerBoard.length; i++) {
+                if (self.centerBoard[i].powerPenalty > 0) {
+                    self.powerPool -= self.centerBoard[i].powerPenalty;
+                }
+            }
             // discard cards
-
             // send player hand to discard
             self.dealer.emptyDeckToDeck(self.playerHand, self.playerDiscard);
-            
-
             // send player board to discard -- can't use empty deck since some cards go to the center discard while most go to the player discard
             let boardAmount = self.playerBoard.length;
             for (let i = 0; i < boardAmount; i++) {
@@ -157,10 +163,8 @@ export default class Game extends Phaser.Scene {
                     self.dealer.moveCard(self.playerBoard[0], self.playerBoard, self.playerDiscard);
                 }
             }
-
             // send center board to discard
             self.dealer.emptyDeckToDeck(self.centerBoard, self.centerDiscard);
-
             // handle discard visuals
             while (self.discardList.length > 0) {
                 console.log("destroying a card");
@@ -232,14 +236,12 @@ export default class Game extends Phaser.Scene {
             gameObject.setTint(0xffff69);
             // top on drag
             self.children.bringToTop(gameObject);
-            console.log("Setting this card down in the player board:");
             console.log(gameObject.data.values.cardData);
         });
 
         this.input.on('dragend', function (pointer, gameObject, dropped) {
             // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
             gameObject.setTint();
-            console.log("Setting this card down in the player board:");
             // make sure it is dropped in a drop zone
             if (!dropped) {
                 gameObject.x = gameObject.input.dragStartX;
