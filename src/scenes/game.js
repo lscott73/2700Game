@@ -181,17 +181,25 @@ export default class Game extends Phaser.Scene {
                 // shuffle player discard into player deck
                 self.dealer.emptyDeckToDeck(self.playerDiscard, self.playerDeck);
                 self.dealer.shuffle(self.playerDeck);
-
                 // then deal remaining amount of cards
                 self.dealer.dealCards(250, 590, 120, drawAfterShuffle, self.playerDeck, self.playerHand);
             } else {
                 self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
             }
-           
-            
-            // deal cards to center
-            self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
 
+            // deal cards to center
+            if (self.centerDeck.length < 5) {
+                let deckAmount = self.centerDeck.length;
+                let drawAfterShuffle = 5 - deckAmount;
+                self.dealer.dealCards(220, 170, 140, deckAmount, self.centerDeck, self.centerBoard);
+                // shuffle center discard into center deck
+                self.dealer.emptyDeckToDeck(self.centerDiscard, self.centerDeck);
+                self.dealer.shuffle(self.centerDeck);
+                // then deal remaining amount of cards
+                self.dealer.dealCards(220, 170, 140, drawAfterShuffle, self.centerDeck, self.centerBoard);
+            } else {
+                self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
+            }
 
 
             // temp logs
