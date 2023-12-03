@@ -36,21 +36,14 @@ export default class Game extends Phaser.Scene {
         //this.add.image(500, 350, 'apple');
 
         // center board zone, not really a zone
-        // this.centerZone = new Zone(this);
-        // this.centerBoardZone = this.centerZone.renderZone(500, 170, 700, 200);
-        // this.outline = this.centerZone.renderOutline(this.centerBoardZone);
         this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
         // player board zone
         this.boardZone = new Zone(this);
         this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
         this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
-        // player Discard zone
-        this.discardZone = new Zone(this);
-        this.playerDiscardZone = this.discardZone.renderZone(925, 590, 140, 200);
-        this.outline = this.discardZone.renderOutline(this.playerDiscardZone);
         this.startText = this.add.text(870, 590, ['Discard']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
-        // player Discard zone
+        // player hand zone
         this.handZone = new Zone(this);
         this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
         this.outline = this.handZone.renderOutline(this.playerHandZone);
@@ -62,14 +55,6 @@ export default class Game extends Phaser.Scene {
         // temp text example: just for testing
         this.tempText = this.add.text(50, 20, ['TEMPORARY TEXT']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
 
-
-        // create card with new card class
-        this.betterCard = new Card(this);
-        this.newestCard = this.betterCard.render(230, 590, new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 5));
-        // can edit card data values like this
-        this.newestCard.data.values.cashCost = 1;
-        // can access card data values like this
-        console.log(this.newestCard.data.values.cashCost);
 
         // create decks:
         // create deck for player
@@ -88,6 +73,8 @@ export default class Game extends Phaser.Scene {
         this.playerDiscard = [];
         // create board area for center discard
         this.centerDiscard = [];
+        // create array for any removed cards, may not need in final game
+        this.removed = [];
 
         //create player pools
         this.powerPool = 10;
@@ -190,44 +177,69 @@ export default class Game extends Phaser.Scene {
             if (!dropped) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
-                self.cashPool++;
-                console.log("cash pool: " + self.cashPool);
             }
         });
 
         this.input.on('drop', function (pointer, gameObject, dropZone) {
+            // lots of game logic will need to happen in here!
+
+            // get card data
             let thisCard = gameObject.data.values.cardData;
             console.log("this card is being dropped:");
             console.log(thisCard);
+            // reset tint from drag
+            gameObject.setTint();
 
 
             // some type of switch statement to check which zone a given card is being dropped into
-            if (dropZone === self.playerBoardZone) {
+            if (dropZone === self.playerBoardZone && thisCard.state === 5) { // play from hand to board
+
                 // set data for dropzone
                 dropZone.data.values.cards++;
                 // set card position to dropzone position
                 gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
                 gameObject.y = dropZone.y;
-
-                // reset tint here i guess?
-                gameObject.setTint();
                 // disable card dragging
                 gameObject.disableInteractive();
                 // move card from player hand to player board
-                self.dealer.moveCard(gameObject.data.values.cardData, self.playerHand, self.playerBoard);
-                // change card state to player board
                 console.log("moving a card from state: " + gameObject.data.values.cardData.state);
-                gameObject.data.values.cardData.state = 6;
+                self.dealer.moveCard(gameObject.data.values.cardData, self.playerHand, self.playerBoard);
                 console.log("to state: " + gameObject.data.values.cardData.state);
                 console.log(gameObject.data.values.cardData);
-                /// this all only works if the card starts in the player hand. I need to do a check for the card state before dealing with the move!
-            } else if (dropZone === self.playerHandZone) {
+
+            } else if (dropZone === self.playerBoardZone && thisCard.state === 1) { // purchase card from board
+                if (self.cashPool >= 3) {
+
+                    self.cashPool -= 3;
+                    console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
+                    // set data for dropzone
+                    dropZone.data.values.cards++;
+                    // set card position to dropzone position
+                    gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
+                    gameObject.y = dropZone.y;
+                    // disable card dragging
+                    gameObject.disableInteractive();
+                    // move card from player hand to player board
+                    console.log("moving a card from state: " + gameObject.data.values.cardData.state);
+                    self.dealer.moveCard(gameObject.data.values.cardData, self.centerBoard, self.playerBoard);
+                    console.log("to state: " + gameObject.data.values.cardData.state);
+                    console.log(gameObject.data.values.cardData);
+
+                } else {
+
+                    gameObject.x = gameObject.input.dragStartX;
+                    gameObject.y = gameObject.input.dragStartY;
+                    console.log("not enough cash");
+
+                }
+
+            } else if (dropZone === self.playerHandZone && thisCard.state === 5) {
 
             } else {
                     gameObject.x = gameObject.input.dragStartX;
                     gameObject.y = gameObject.input.dragStartY;
                     self.cashPool++;
-                    console.log("cash pool: " + self.cashPool);
+                    self.leveragePool++;
             }
         });
     }

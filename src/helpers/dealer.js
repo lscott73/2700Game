@@ -22,6 +22,7 @@ export default class Dealer {
                 console.log("card not found");
                 return;
             } else {
+                cardData.state = this.stateLookup(endDeck);
                 endDeck.push(startDeck[cardIndex]);
                 startDeck.splice(cardIndex, 1);
                 console.log("card moved, new start deck length: " + startDeck.length + ", new end deck length: " + endDeck.length);
@@ -38,6 +39,28 @@ export default class Dealer {
         this.combineDecks = (deck, deckToEmpty) => { // combine decks
             deck = deck.concat(deckToEmpty);
             deckToEmpty = [];
+        }
+
+        this.stateLookup = (endDeck) => { // returns the state of the deck
+            if (endDeck === scene.centerDeck) {
+                return 0;
+            } else if (endDeck === scene.centerBoard) {
+                return 1;
+            } else if (endDeck === scene.centerDiscard) {
+                return 2;
+            } else if (endDeck === scene.playerDeck) {
+                return 3;
+            } else if (endDeck === scene.playerDiscard) {
+                return 4;
+            } else if (endDeck === scene.playerHand) {
+                return 5;
+            } else if (endDeck === scene.playerBoard) {
+                return 6;
+            } else if (endDeck === scene.removed) {
+                return 7;
+            } else {
+                return -1;
+            }
         }
 
     }
