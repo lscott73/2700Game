@@ -109,16 +109,51 @@ export default class Game extends Phaser.Scene {
         // add cards for center deck
         // probably just 30 this.centerDeck.push(new CardData( details of particular card here ));
         // the following for loop is just for testing
-        for (let i = 0; i < 30; i++) {
-            let random1 = Math.floor(Math.random() * 4);
-            let random2 = Math.floor(Math.random() * 4);
-            let random3 = Math.floor(Math.random() * 4);
-            let random4 = Math.floor(Math.random() * 4);
-            let random5 = Math.floor(Math.random() * 4);
+        // for (let i = 0; i < 30; i++) {
+        //     let random1 = Math.floor(Math.random() * 4);
+        //     let random2 = Math.floor(Math.random() * 4);
+        //     let random3 = Math.floor(Math.random() * 4);
+        //     let random4 = Math.floor(Math.random() * 4);
+        //     let random5 = Math.floor(Math.random() * 4);
 
-            this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 1, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
-            console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
-        }
+        //     this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 1, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
+        //     console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
+        // }
+        // self.dealer.shuffle(self.centerDeck);
+
+        //add cards to center deck
+        this.centerDeck.push(new CardData(1, 0, 2, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish1
+        this.centerDeck.push(new CardData(2, 0, 2, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish2
+        this.centerDeck.push(new CardData(3, 0, 3, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish3
+        this.centerDeck.push(new CardData(4, 0, 3, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish4
+        this.centerDeck.push(new CardData(5, 0, 5, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish5
+        this.centerDeck.push(new CardData(6, 0, 4, 3, 0, 0, 'magentaCardFront', 0)); // Businessfish6
+        this.centerDeck.push(new CardData(1, 0, 0, 1, 1, 0, 'magentaCardFront', 0)); // Lawfish1
+        this.centerDeck.push(new CardData(2, 0, 0, 2, 0, 0, 'magentaCardFront', 0)); // Lawfish2
+        this.centerDeck.push(new CardData(4, 0, 0, 2, 1, 0, 'magentaCardFront', 0)); // Lawfish3
+        this.centerDeck.push(new CardData(5, 0, 0, 3, 0, 0, 'magentaCardFront', 0)); // Lawfish4
+        this.centerDeck.push(new CardData(6, 0, 0, 4, 1, 0, 'magentaCardFront', 0)); // Lawfish5
+        this.centerDeck.push(new CardData(7, 0, 0, 4, 2, 0, 'magentaCardFront', 0)); // Lawfish6
+        this.centerDeck.push(new CardData(3, 0, 0, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian1
+        this.centerDeck.push(new CardData(3, 0, 1, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian2
+        this.centerDeck.push(new CardData(3, 0, 0, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian3
+        this.centerDeck.push(new CardData(5, 0, 2, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian4
+        this.centerDeck.push(new CardData(7, 0, 3, 0, 3, 0, 'magentaCardFront', 0)); // Polifishian5
+        this.centerDeck.push(new CardData(9, 0, 1, 0, 5, 0, 'magentaCardFront', 0)); // Polifishian6
+        this.centerDeck.push(new CardData(0, 5, 0, 0, 5, 2, 'magentaCardFront', 0)); // Lawsuit - Libel
+        this.centerDeck.push(new CardData(0, 10, 0, 0, 10, 5, 'magentaCardFront', 0)); // Lawsuit - RICO
+        this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Merger
+        this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Slander
+        this.centerDeck.push(new CardData(0, 3, 0, 0, 3, 1, 'magentaCardFront', 0)); // Lawsuit - Wrongful Termination
+        this.centerDeck.push(new CardData(0, 6, 0, 0, 6, 3, 'magentaCardFront', 0)); // Lawsuit - Medical Malpractice
+        this.centerDeck.push(new CardData(0, 4, 0, 0, 4, 2, 'magentaCardFront', 0)); // Lawsuit - Tort
+        this.centerDeck.push(new CardData(0, 7, 0, 0, 7, 3, 'magentaCardFront', 0)); // Lawsuit - Drug Recall
+        this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Divorce
+        this.centerDeck.push(new CardData(0, 8, 0, 0, 8, 4, 'magentaCardFront', 0)); // Lawsuit - Class Action
+        this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Civil
+        this.centerDeck.push(new CardData(0, 9, 0, 0, 9, 4, 'magentaCardFront', 0)); // Lawsuit - EEOC
+
+        // initial shuffle of center deck
         self.dealer.shuffle(self.centerDeck);
 
         // initial deal of cards
