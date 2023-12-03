@@ -301,7 +301,7 @@ export default class Game extends Phaser.Scene {
                 // set data for dropzone
                 dropZone.data.values.cards++;
                 // set card position to dropzone position
-                gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
+                gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 60);
                 gameObject.y = dropZone.y;
                 // disable card dragging
                 gameObject.disableInteractive();
@@ -315,18 +315,20 @@ export default class Game extends Phaser.Scene {
                 self.powerPool += thisCard.powerValue;
                 self.leveragePool += thisCard.leverageValue;
                 self.cashPool += thisCard.cashValue;
-
-                //gameObject.destroy(true);
+                
             } else if (dropZone === self.playerBoardZone && thisCard.state === 1) { // purchase card from board
                 if (self.cashPool >= thisCard.cashCost && self.leveragePool >= thisCard.leverageCost) {
-
                     self.cashPool -= thisCard.cashCost;
                     self.leveragePool -= thisCard.leverageCost;
+                    // handle bonus if Lawsuit card
+                    if (thisCard.leverageCost > 0) {
+                        self.powerPool += thisCard.powerValue;
+                    }
                     console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
                     // set data for dropzone
                     dropZone.data.values.cards++;
                     // set card position to dropzone position
-                    gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
+                    gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 60);
                     gameObject.y = dropZone.y;
                     // disable card dragging
                     gameObject.disableInteractive();
