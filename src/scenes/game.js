@@ -53,8 +53,10 @@ export default class Game extends Phaser.Scene {
         this.playerDiscardZone = this.discardZone.renderZone(925, 590, 140, 200);
         this.outline = this.discardZone.renderOutline(this.playerDiscardZone);
         this.startText = this.add.text(870, 590, ['Discard']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
-
-        // player hand zone, not really a zone
+        // player Discard zone
+        this.handZone = new Zone(this);
+        this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
+        this.outline = this.handZone.renderOutline(this.playerHandZone);
         this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
 
         this.dealer = new Dealer(this);
@@ -89,6 +91,18 @@ export default class Game extends Phaser.Scene {
         this.playerDiscard = [];
         // create board area for center discard
         this.centerDiscard = [];
+
+        //create player pools
+        this.powerPool = 10;
+        this.leveragePool = 0;
+        this.cashPool = 0;
+        // create text for player pools:
+        this.powerText = this.add.text(900, 20, this.powerPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ffff00');
+        this.leverageText = this.add.text(900, 120, this.leveragePool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ff0000');
+        this.cashText = this.add.text(900, 220, this.cashPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ff00');
+
+
+
 
         // add basic cards for player
         for (let i = 0; i < 10; i++) {
@@ -171,23 +185,25 @@ export default class Game extends Phaser.Scene {
             console.log(gameObject.data.values.cardData);
         });
 
-        // handle card drop events
         this.input.on('dragend', function (pointer, gameObject, dropped) {
             // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
             gameObject.setTint();
-        });
-
-        this.input.on('dragend', function (pointer, gameObject, dropped) {
-            // tint back to normal on drop --- not working, added it to this.input.on('drop') instead
-            gameObject.setTint();
+            console.log("Setting this card down in the player board:");
             // make sure it is dropped in a drop zone
             if (!dropped) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
+                self.cashPool++;
+                console.log("cash pool: " + self.cashPool);
             }
         });
 
         this.input.on('drop', function (pointer, gameObject, dropZone) {
+            let thisCard = gameObject.data.values.cardData;
+            console.log("this card is being dropped:");
+            console.log(thisCard);
+
+
             // some type of switch statement to check which zone a given card is being dropped into
             if (dropZone === self.playerBoardZone) {
                 // set data for dropzone
@@ -208,6 +224,13 @@ export default class Game extends Phaser.Scene {
                 console.log("to state: " + gameObject.data.values.cardData.state);
                 console.log(gameObject.data.values.cardData);
                 /// this all only works if the card starts in the player hand. I need to do a check for the card state before dealing with the move!
+            } else if (dropZone === self.playerHandZone) {
+
+            } else {
+                    gameObject.x = gameObject.input.dragStartX;
+                    gameObject.y = gameObject.input.dragStartY;
+                    self.cashPool++;
+                    console.log("cash pool: " + self.cashPool);
             }
         });
     }
@@ -223,5 +246,10 @@ export default class Game extends Phaser.Scene {
         if(this.playerHand.length === 5) {
             this.tempText.setText("5 card? imagine that");
         }
+
+
+        this.powerText.setText("*" + this.powerPool);
+        this.leverageText.setText("!" + this.leveragePool);
+        this.cashText.setText("$" + this.cashPool);
     }
 }
