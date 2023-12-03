@@ -146,6 +146,7 @@ export default class Game extends Phaser.Scene {
 
             // send player hand to discard
             self.dealer.emptyDeckToDeck(self.playerHand, self.playerDiscard);
+            
 
             // send player board to discard -- can't use empty deck since some cards go to the center discard while most go to the player discard
             let boardAmount = self.playerBoard.length;
@@ -172,8 +173,9 @@ export default class Game extends Phaser.Scene {
 
             // start of turn actions:
             
+            // deal cards to player
             if (self.playerDeck.length < 5) {
-                let deckAmount = self.playerDiscard.length;
+                let deckAmount = self.playerDeck.length;
                 let drawAfterShuffle = 5 - deckAmount;
                 self.dealer.dealCards(250, 590, 120, deckAmount, self.playerDeck, self.playerHand);
                 // shuffle player discard into player deck
@@ -182,9 +184,11 @@ export default class Game extends Phaser.Scene {
 
                 // then deal remaining amount of cards
                 self.dealer.dealCards(250, 590, 120, drawAfterShuffle, self.playerDeck, self.playerHand);
+            } else {
+                self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
             }
-            // deal cards to player
-            self.dealer.dealCards(250, 590, 120, 5, self.playerDeck, self.playerHand);
+           
+            
             // deal cards to center
             self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
 
