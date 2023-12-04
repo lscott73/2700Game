@@ -42,7 +42,6 @@ export default class Game extends Phaser.Scene {
         this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
         this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
-        this.startText = this.add.text(870, 590, ['Discard']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#0000000'); 
         // player hand zone
         this.handZone = new Zone(this);
         this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
@@ -52,8 +51,9 @@ export default class Game extends Phaser.Scene {
         this.dealer = new Dealer(this);
 
 
-        // temp text example: just for testing
-        this.tempText = this.add.text(50, 20, ['TEMPORARY TEXT']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        // deckText for tracking deck size
+        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
 
 
         // create decks:
@@ -77,13 +77,13 @@ export default class Game extends Phaser.Scene {
         this.removed = [];
 
         //create player pools
-        this.powerPool = 10;
+        this.powerPool = 20;
         this.leveragePool = 0;
         this.cashPool = 0;
         // create text for player pools:
-        this.powerText = this.add.text(900, 20, this.powerPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ffff00');
-        this.leverageText = this.add.text(900, 120, this.leveragePool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ff0000');
-        this.cashText = this.add.text(900, 220, this.cashPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ff00');
+        this.powerText = this.add.text(900, 280, this.powerPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ffff00');
+        this.leverageText = this.add.text(900, 360, this.leveragePool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#ff0000');
+        this.cashText = this.add.text(900, 440, this.cashPool).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ff00');
 
         // create discarding array:
         this.discardList = [];
@@ -91,8 +91,8 @@ export default class Game extends Phaser.Scene {
 
         // create cardData objects:
         // add basic cards for player
-        for (let i = 0; i < 10; i++) {
-            if (i < 5) {
+        for (let i = 0; i < 8; i++) {
+            if (i < 4) {
                 this.playerDeck.push(new CardData(0, 0, 1, 0, 0, 0, 'cxampleCardFront', 3)); // sprite would be 'internSprite' or something
             } else {
                 this.playerDeck.push(new CardData(0, 0, 0, 1, 0, 0, 'cxampleCardFront', 3));
@@ -101,58 +101,50 @@ export default class Game extends Phaser.Scene {
         }
         // shuffle this initial player deck
         self.dealer.shuffle(self.playerDeck);
-        // log the shuffled deck
-        // for (let i = 0; i < 10; i++) {
-        //     console.log("player deck: card " + i + " has (" + self.playerDeck[i].cashValue + ", " + self.playerDeck[i].leverageValue + ")");
-        // }
-
-        // add cards for center deck
-        // probably just 30 this.centerDeck.push(new CardData( details of particular card here ));
-        // the following for loop is just for testing
-        // for (let i = 0; i < 30; i++) {
-        //     let random1 = Math.floor(Math.random() * 4);
-        //     let random2 = Math.floor(Math.random() * 4);
-        //     let random3 = Math.floor(Math.random() * 4);
-        //     let random4 = Math.floor(Math.random() * 4);
-        //     let random5 = Math.floor(Math.random() * 4);
-
-        //     this.centerDeck.push(new CardData(random1, random2, random3, random4, random1, 1, 'magentaCardFront', 0)); // sprite would be 'lawsuitSprite' or something
-        //     console.log("center deck: add a card with (" + this.centerDeck[i].cashValue + ", " + this.centerDeck[i].leverageValue + ")");
-        // }
-        // self.dealer.shuffle(self.centerDeck);
 
         //add cards to center deck
-        this.centerDeck.push(new CardData(1, 0, 2, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish1
-        this.centerDeck.push(new CardData(2, 0, 2, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish2
-        this.centerDeck.push(new CardData(3, 0, 3, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish3
-        this.centerDeck.push(new CardData(4, 0, 3, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish4
-        this.centerDeck.push(new CardData(5, 0, 5, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish5
-        this.centerDeck.push(new CardData(6, 0, 4, 3, 0, 0, 'magentaCardFront', 0)); // Businessfish6
-        this.centerDeck.push(new CardData(1, 0, 0, 1, 1, 0, 'magentaCardFront', 0)); // Lawfish1
-        this.centerDeck.push(new CardData(2, 0, 0, 2, 0, 0, 'magentaCardFront', 0)); // Lawfish2
-        this.centerDeck.push(new CardData(4, 0, 0, 2, 1, 0, 'magentaCardFront', 0)); // Lawfish3
-        this.centerDeck.push(new CardData(5, 0, 0, 3, 0, 0, 'magentaCardFront', 0)); // Lawfish4
-        this.centerDeck.push(new CardData(6, 0, 0, 4, 1, 0, 'magentaCardFront', 0)); // Lawfish5
-        this.centerDeck.push(new CardData(7, 0, 0, 4, 2, 0, 'magentaCardFront', 0)); // Lawfish6
-        this.centerDeck.push(new CardData(3, 0, 0, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian1
-        this.centerDeck.push(new CardData(3, 0, 1, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian2
-        this.centerDeck.push(new CardData(3, 0, 0, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian3
-        this.centerDeck.push(new CardData(5, 0, 2, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian4
-        this.centerDeck.push(new CardData(7, 0, 3, 0, 3, 0, 'magentaCardFront', 0)); // Polifishian5
-        this.centerDeck.push(new CardData(9, 0, 1, 0, 5, 0, 'magentaCardFront', 0)); // Polifishian6
-        this.centerDeck.push(new CardData(0, 5, 0, 0, 5, 2, 'magentaCardFront', 0)); // Lawsuit - Libel
-        this.centerDeck.push(new CardData(0, 10, 0, 0, 10, 5, 'magentaCardFront', 0)); // Lawsuit - RICO
-        this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Merger
-        this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Slander
-        this.centerDeck.push(new CardData(0, 3, 0, 0, 3, 1, 'magentaCardFront', 0)); // Lawsuit - Wrongful Termination
-        this.centerDeck.push(new CardData(0, 6, 0, 0, 6, 3, 'magentaCardFront', 0)); // Lawsuit - Medical Malpractice
-        this.centerDeck.push(new CardData(0, 4, 0, 0, 4, 2, 'magentaCardFront', 0)); // Lawsuit - Tort
-        this.centerDeck.push(new CardData(0, 7, 0, 0, 7, 3, 'magentaCardFront', 0)); // Lawsuit - Drug Recall
-        this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Divorce
-        this.centerDeck.push(new CardData(0, 8, 0, 0, 8, 4, 'magentaCardFront', 0)); // Lawsuit - Class Action
-        this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Civil
-        this.centerDeck.push(new CardData(0, 9, 0, 0, 9, 4, 'magentaCardFront', 0)); // Lawsuit - EEOC
-
+        let j = 0;
+        while (j < 2) { // add two of each type of card
+            this.centerDeck.push(new CardData(1, 0, 2, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish1
+            this.centerDeck.push(new CardData(2, 0, 2, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish2
+            this.centerDeck.push(new CardData(3, 0, 3, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish3
+            this.centerDeck.push(new CardData(4, 0, 3, 1, 0, 0, 'magentaCardFront', 0)); // Businessfish4
+            this.centerDeck.push(new CardData(5, 0, 5, 0, 0, 0, 'magentaCardFront', 0)); // Businessfish5
+            this.centerDeck.push(new CardData(6, 0, 4, 3, 0, 0, 'magentaCardFront', 0)); // Businessfish6
+            this.centerDeck.push(new CardData(8, 0, 8, 2, 0, 0, 'magentaCardFront', 0)); // Businessfish7
+            this.centerDeck.push(new CardData(10, 0, 9, 3, 0, 0, 'magentaCardFront', 0)); // Businessfish8
+            this.centerDeck.push(new CardData(1, 0, 0, 1, 1, 0, 'magentaCardFront', 0)); // Lawfish1
+            this.centerDeck.push(new CardData(2, 0, 0, 2, 0, 0, 'magentaCardFront', 0)); // Lawfish2
+            this.centerDeck.push(new CardData(4, 0, 0, 2, 1, 0, 'magentaCardFront', 0)); // Lawfish3
+            this.centerDeck.push(new CardData(5, 0, 0, 3, 0, 0, 'magentaCardFront', 0)); // Lawfish4
+            this.centerDeck.push(new CardData(6, 0, 0, 4, 1, 0, 'magentaCardFront', 0)); // Lawfish5
+            this.centerDeck.push(new CardData(7, 0, 0, 4, 2, 0, 'magentaCardFront', 0)); // Lawfish6
+            this.centerDeck.push(new CardData(10, 0, 0, 8, 0, 0, 'magentaCardFront', 0)); // Lawfish7
+            this.centerDeck.push(new CardData(11, 0, 0, 9, 3, 0, 'magentaCardFront', 0)); // Lawfish8
+            this.centerDeck.push(new CardData(3, 0, 0, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian1
+            this.centerDeck.push(new CardData(3, 0, 1, 0, 1, 0, 'magentaCardFront', 0)); // Polifishian2
+            this.centerDeck.push(new CardData(3, 0, 0, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian3
+            this.centerDeck.push(new CardData(5, 0, 2, 0, 2, 0, 'magentaCardFront', 0)); // Polifishian4
+            this.centerDeck.push(new CardData(7, 0, 3, 0, 3, 0, 'magentaCardFront', 0)); // Polifishian5
+            this.centerDeck.push(new CardData(9, 0, 1, 0, 5, 0, 'magentaCardFront', 0)); // Polifishian6
+            this.centerDeck.push(new CardData(11, 0, 3, 0, 6, 0, 'magentaCardFront', 0)); // Polifishian7
+            this.centerDeck.push(new CardData(13, 0, 6, 0, 6, 0, 'magentaCardFront', 0)); // Polifishian8
+            this.centerDeck.push(new CardData(0, 5, 0, 0, 5, 3, 'magentaCardFront', 0)); // Lawsuit - Libel
+            this.centerDeck.push(new CardData(0, 10, 0, 0, 10, 5, 'magentaCardFront', 0)); // Lawsuit - RICO 
+            this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Merger
+            this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Slander
+            this.centerDeck.push(new CardData(0, 3, 0, 0, 3, 2, 'magentaCardFront', 0)); // Lawsuit - Wrongful Termination
+            this.centerDeck.push(new CardData(0, 6, 0, 0, 6, 3, 'magentaCardFront', 0)); // Lawsuit - Medical Malpractice
+            this.centerDeck.push(new CardData(0, 4, 0, 0, 4, 2, 'magentaCardFront', 0)); // Lawsuit - Tort
+            this.centerDeck.push(new CardData(0, 7, 0, 0, 7, 4, 'magentaCardFront', 0)); // Lawsuit - Drug Recall
+            this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Divorce
+            this.centerDeck.push(new CardData(0, 8, 0, 0, 8, 4, 'magentaCardFront', 0)); // Lawsuit - Class Action
+            this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Civil
+            this.centerDeck.push(new CardData(0, 9, 0, 0, 9, 5, 'magentaCardFront', 0)); // Lawsuit - EEOC
+            this.centerDeck.push(new CardData(0, 8, 0, 0, 8, 4, 'magentaCardFront', 0)); // Lawsuit - SEC Fraud
+            this.centerDeck.push(new CardData(0, 9, 0, 0, 9, 5, 'magentaCardFront', 0)); // Lawsuit - Sherman Act
+            j++;
+        }
         // initial shuffle of center deck
         self.dealer.shuffle(self.centerDeck);
 
@@ -163,11 +155,55 @@ export default class Game extends Phaser.Scene {
 
 
 
+        // trade buttons/text:
+        // leverage to power
+        this.tradeLeverageToPowerText = this.add.text(15, 280, ['!3 -> *1']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.tradeLeverageToPowerText.on('pointerover', function (pointer) {
+            self.tradeLeverageToPowerText.setColor('#ff69b4');
+        });
+        this.tradeLeverageToPowerText.on('pointerout', function (pointer) {
+            self.tradeLeverageToPowerText.setColor('#00ffff');
+        });
+        this.tradeLeverageToPowerText.on('pointerdown', function (pointer) {
+            if (self.leveragePool >= 3) {
+                self.leveragePool -= 3;
+                self.powerPool += 1;
+            }
+        });
+        // cash to leverage
+        this.tradeCashToLeverageText = this.add.text(15, 360, ['$3 -> !1']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.tradeCashToLeverageText.on('pointerover', function (pointer) {
+            self.tradeCashToLeverageText.setColor('#ff69b4');
+        });
+        this.tradeCashToLeverageText.on('pointerout', function (pointer) {
+            self.tradeCashToLeverageText.setColor('#00ffff');
+        });
+        this.tradeCashToLeverageText.on('pointerdown', function (pointer) {
+            if (self.cashPool >= 3) {
+                self.cashPool -= 3;
+                self.leveragePool += 1;
+            }
+        });
+        // power to cash
+        this.tradePowerToCashText = this.add.text(15, 440, ['*3 -> $1']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive();
+        this.tradePowerToCashText.on('pointerover', function (pointer) {
+            self.tradePowerToCashText.setColor('#ff69b4');
+        });
+        this.tradePowerToCashText.on('pointerout', function (pointer) {
+            self.tradePowerToCashText.setColor('#00ffff');
+        });
+        this.tradePowerToCashText.on('pointerdown', function (pointer) {
+            if (self.powerPool >= 3) {
+                self.powerPool -= 3;
+                self.cashPool += 1;
+            }
+        });
 
 
-        // interactive text emample:
+
+        // end turn button/text:
         // creates text
-        this.startText = this.add.text(50, 350, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
+        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff').setInteractive(); 
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
             self.startText.setColor('#ff69b4');
@@ -299,7 +335,7 @@ export default class Game extends Phaser.Scene {
                 // set data for dropzone
                 dropZone.data.values.cards++;
                 // set card position to dropzone position
-                gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 60);
+                gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
                 gameObject.y = dropZone.y;
                 // disable card dragging
                 gameObject.disableInteractive();
@@ -319,12 +355,18 @@ export default class Game extends Phaser.Scene {
                     // handle bonus if Lawsuit card
                     if (thisCard.leverageCost > 0) {
                         self.powerPool += thisCard.powerValue;
+                        // draw 1 card when you defeat a lawsuit?
+                        if (self.playerDeck.length < 1) {
+                            self.dealer.emptyDeckToDeck(self.playerDiscard, self.playerDeck);
+                            self.dealer.shuffle(self.playerDeck);
+                        }
+                        self.dealer.dealCards(250, 590, 120, 1, self.playerDeck, self.playerHand);
                     }
                     //console.log("purchasing a card from state: " + gameObject.data.values.cardData.state);
                     // set data for dropzone
                     dropZone.data.values.cards++;
                     // set card position to dropzone position
-                    gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 60);
+                    gameObject.x = dropZone.x - 310 + (dropZone.data.values.cards * 40);
                     gameObject.y = dropZone.y;
                     // disable card dragging
                     gameObject.disableInteractive();
@@ -352,10 +394,8 @@ export default class Game extends Phaser.Scene {
         // update loop
         // may only be needed for updating text and numbers on screen!
         // here are some temp examples:
-        this.tempText.setText(this.playerHand.length + " cards in player hand");
-        if(this.playerHand.length === 5) {
-            this.tempText.setText("5 cards?");
-        }
+        this.deckText.setText("DECK: " + this.playerDeck.length);
+        this.discardText.setText("DISCARD: " + this.playerDiscard.length);
 
 
         this.powerText.setText("*" + this.powerPool);
