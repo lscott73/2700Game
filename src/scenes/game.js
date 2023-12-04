@@ -54,8 +54,8 @@ export default class Game extends Phaser.Scene {
 
 
         // deckText for tracking deck size
-        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#00ffff').setInteractive();
-        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#00ffff').setInteractive();
+        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
+        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
 
 
         // create decks:
@@ -83,16 +83,16 @@ export default class Game extends Phaser.Scene {
         this.leveragePool = 0;
         this.cashPool = 0;
         // create text for player pools:
-        this.powerText = this.add.text(890, 280, this.powerPool).setFontSize(32).setFontFamily('Balthazar').setColor('#ffff00');
-        this.leverageText = this.add.text(890, 360, this.leveragePool).setFontSize(32).setFontFamily('Balthazar').setColor('#ff0000');
-        this.cashText = this.add.text(890, 440, this.cashPool).setFontSize(32).setFontFamily('Balthazar').setColor('#00ff00');
+        this.powerText = this.add.text(890, 280, this.powerPool).setFontSize(32).setFontFamily('Balthazar').setColor('#5ce1e6');
+        this.leverageText = this.add.text(890, 360, this.leveragePool).setFontSize(32).setFontFamily('Balthazar').setColor('#ff3131');
+        this.cashText = this.add.text(890, 440, this.cashPool).setFontSize(32).setFontFamily('Balthazar').setColor('#7ed957');
 
         // create discarding array:
         this.discardList = [];
 
         // creat a turn counter, for funsies
         this.turnCounter = 1;
-        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Balthazar').setColor('#00ffff');
+        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21');
 
 
         // create cardData objects:
@@ -163,12 +163,12 @@ export default class Game extends Phaser.Scene {
 
         // trade buttons/text:
         // leverage to power
-        this.tradeLeverageToPowerText = this.add.text(15, 280, ['\u23C83 \u21E2 \u235A1']).setFontSize(32).setFontFamily('Balthazar').setColor('#00ffff').setInteractive();
+        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235A']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
         this.tradeLeverageToPowerText.on('pointerover', function (pointer) {
-            self.tradeLeverageToPowerText.setColor('#ff69b4');
+            self.tradeLeverageToPowerText.setColor('#ffffff');
         });
         this.tradeLeverageToPowerText.on('pointerout', function (pointer) {
-            self.tradeLeverageToPowerText.setColor('#00ffff');
+            self.tradeLeverageToPowerText.setColor('#fbbb21');
         });
         this.tradeLeverageToPowerText.on('pointerdown', function (pointer) {
             if (self.leveragePool >= 3) {
@@ -177,12 +177,12 @@ export default class Game extends Phaser.Scene {
             }
         });
         // cash to leverage
-        this.tradeCashToLeverageText = this.add.text(15, 360, ['$3 \u21E2 \u23C81']).setFontSize(32).setFontFamily('Balthazar').setColor('#00ffff').setInteractive();
+        this.tradeCashToLeverageText = this.add.text(15, 360, ['3$ \u21E2 1\u23C8']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
         this.tradeCashToLeverageText.on('pointerover', function (pointer) {
-            self.tradeCashToLeverageText.setColor('#ff69b4');
+            self.tradeCashToLeverageText.setColor('#ffffff');
         });
         this.tradeCashToLeverageText.on('pointerout', function (pointer) {
-            self.tradeCashToLeverageText.setColor('#00ffff');
+            self.tradeCashToLeverageText.setColor('#fbbb21');
         });
         this.tradeCashToLeverageText.on('pointerdown', function (pointer) {
             if (self.cashPool >= 3) {
@@ -191,12 +191,12 @@ export default class Game extends Phaser.Scene {
             }
         });
         // power to cash
-        this.tradePowerToCashText = this.add.text(15, 440, ['\u235A3 \u21E2 $1']).setFontSize(32).setFontFamily('Balthazar').setColor('#00ffff').setInteractive();
+        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235A \u21E2 1$']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
         this.tradePowerToCashText.on('pointerover', function (pointer) {
-            self.tradePowerToCashText.setColor('#ff69b4');
+            self.tradePowerToCashText.setColor('#ffffff');
         });
         this.tradePowerToCashText.on('pointerout', function (pointer) {
-            self.tradePowerToCashText.setColor('#00ffff');
+            self.tradePowerToCashText.setColor('#fbbb21');
         });
         this.tradePowerToCashText.on('pointerdown', function (pointer) {
             if (self.powerPool >= 3) {
@@ -209,14 +209,14 @@ export default class Game extends Phaser.Scene {
 
         // end turn button/text:
         // creates text
-        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Balthazar').setColor('#00ffff').setInteractive(); 
+        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive(); 
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
-            self.startText.setColor('#ff69b4');
+            self.startText.setColor('#ffffff');
         });
         // color change back to original
         this.startText.on('pointerout', function (pointer) {
-            self.startText.setColor('#00ffff');
+            self.startText.setColor('#fbbb21');
         });
 
         // end turn and start new turn!
@@ -313,7 +313,7 @@ export default class Game extends Phaser.Scene {
         // handle card pickup events
         this.input.on('dragstart', function (pointer, gameObject) {
             // tint on drag
-            gameObject.setTint(0xffff69);
+            gameObject.setTint(0xfbbb21);
             // top on drag
             self.children.bringToTop(gameObject);
             console.log(gameObject.data.values.cardData);
