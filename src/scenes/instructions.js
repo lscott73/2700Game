@@ -1,20 +1,30 @@
+import Phaser from 'phaser';
+import BackgroundImg from 'src/assets/Instructions Screen.png';
 export class instructions extends Phaser.Scene {
     constructor() {
         super({
-            key: SCENES.INSTRUCTIONS
+            key: 'instructions'
         })
     }
     init() {
 
     }
+    preload() {
+        this.load.image('instructionsScreen', BackgroundImg);
+    }
     create() {
-        this.add.image(0,0., "title").setOrigin(0);
+        this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, 'instructionsScreen');
+        const startPoint = {
+            x: this.game.renderer.width / 2,
+            y: this.game.renderer.height / 2
+        };
 
-        let playButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, "playbutton").setDepth(1);
+        const startRadius = 100;
+        let startCircle = this.add.circle(startPoint.x, startPoint.y, startRadius, 0x0000ff, 0);
+        startCircle.setInteractive();
 
-        playButton.setInteractive();
-        playButton.on("pointerdown", ()=> {
-
+        startCircle.on('pointerdown', () => {
+            this.scene.start('Game')
         })
 
     }
