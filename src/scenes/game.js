@@ -352,9 +352,9 @@ export default class Game extends Phaser.Scene {
         // update loop
         // may only be needed for updating text and numbers on screen!
         // here are some temp examples:
-        this.tempText.setText(this.playerDeck.length + " cards in player deck");
-        if(this.playerDeck.length === 5) {
-            this.tempText.setText("5 cards? imagine that");
+        this.tempText.setText(this.playerHand.length + " cards in player hand");
+        if(this.playerHand.length === 5) {
+            this.tempText.setText("5 cards?");
         }
 
 
