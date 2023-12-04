@@ -3,7 +3,7 @@ const sizes = {
     width: 1000,
     height: 700
 }
-import BackgroundImg from 'src/assets/Game Screen.png';
+import BackgroundImg from 'src/assets/InstructionsScreen.png';
 
 export default class loadscreen extends Phaser.Scene {
     constructor() {

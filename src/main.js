@@ -1,6 +1,7 @@
 import '../style.css'
 import Phaser from 'phaser'
 import Game from './scenes/game'
+import LoadScreen from './scenes/loadscreen';
 
 const sizes = {
     width: 1000,
@@ -12,7 +13,7 @@ const config = {
     width : sizes.width,
     height : sizes.height,
     canvas:gameCanvas,
-    scene:[Game]
+    scene:[LoadScreen]
 }
 
 const game = new Phaser.Game(config);

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import BackgroundImg from 'src/assets/Instructions Screen.png';
+import BackgroundImg from '../assets/GameScreen.png';
 export class instructions extends Phaser.Scene {
     constructor() {
         super({
