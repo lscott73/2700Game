@@ -1,5 +1,4 @@
 import BackgroundImg from '../assets/bg.png'
-import AppleImg from '../assets/apple.png'
 import CyanCardBack from '../assets/CyanCardBack.png';
 import ExampleCardFront from '../assets/ExampleCardFront.png';
 import MagentaCardBack from '../assets/MagentaCardBack.png';
@@ -25,7 +24,6 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         this.load.image('background', BackgroundImg);
-        //this.load.image('apple', AppleImg);
         this.load.image('cyanCardBack', CyanCardBack);
         this.load.image('cxampleCardFront', ExampleCardFront);
         this.load.image('magentaCardBack', MagentaCardBack);
