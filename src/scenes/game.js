@@ -88,6 +88,10 @@ export default class Game extends Phaser.Scene {
         // create discarding array:
         this.discardList = [];
 
+        // creat a turn counter, for funsies
+        this.turnCounter = 1;
+        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Trebuchet MS').setColor('#00ffff');
+
 
         // create cardData objects:
         // add basic cards for player
@@ -275,6 +279,9 @@ export default class Game extends Phaser.Scene {
             } else {
                 self.dealer.dealCards(220, 170, 140, 5, self.centerDeck, self.centerBoard);
             }
+
+            // increment turn counter
+            self.turnCounter++;
 
 
             // temp logs
