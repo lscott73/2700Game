@@ -36,24 +36,24 @@ export default class Game extends Phaser.Scene {
         //this.add.image(500, 350, 'apple');
 
         // center board zone, not really a zone
-        this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Balthazar').setColor('#0000000'); 
+        this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
         // player board zone
         this.boardZone = new Zone(this);
         this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
-        this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Balthazar').setColor('#0000000'); 
+        this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
         // player hand zone
         this.handZone = new Zone(this);
         this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
         this.outline = this.handZone.renderOutline(this.playerHandZone);
-        this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Balthazar').setColor('#0000000'); 
+        this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
 
         this.dealer = new Dealer(this);
 
 
         // deckText for tracking deck size
-        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
-        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
+        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
 
 
         // create decks:
@@ -81,16 +81,16 @@ export default class Game extends Phaser.Scene {
         this.leveragePool = 0;
         this.cashPool = 0;
         // create text for player pools:
-        this.powerText = this.add.text(890, 280, this.powerPool).setFontSize(32).setFontFamily('Balthazar').setColor('#5ce1e6');
-        this.leverageText = this.add.text(890, 360, this.leveragePool).setFontSize(32).setFontFamily('Balthazar').setColor('#ff3131');
-        this.cashText = this.add.text(890, 440, this.cashPool).setFontSize(32).setFontFamily('Balthazar').setColor('#7ed957');
+        this.powerText = this.add.text(890, 280, this.powerPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#5ce1e6');
+        this.leverageText = this.add.text(890, 360, this.leveragePool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#ff3131');
+        this.cashText = this.add.text(890, 440, this.cashPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#7ed957');
 
         // create discarding array:
         this.discardList = [];
 
         // creat a turn counter, for funsies
         this.turnCounter = 1;
-        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21');
+        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21');
 
 
         // create cardData objects:
@@ -161,7 +161,7 @@ export default class Game extends Phaser.Scene {
 
         // trade buttons/text:
         // leverage to power
-        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235A']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
+        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235A']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
         this.tradeLeverageToPowerText.on('pointerover', function (pointer) {
             self.tradeLeverageToPowerText.setColor('#ffffff');
         });
@@ -175,7 +175,7 @@ export default class Game extends Phaser.Scene {
             }
         });
         // cash to leverage
-        this.tradeCashToLeverageText = this.add.text(15, 360, ['3$ \u21E2 1\u23C8']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
+        this.tradeCashToLeverageText = this.add.text(15, 360, ['3$ \u21E2 1\u23C8']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
         this.tradeCashToLeverageText.on('pointerover', function (pointer) {
             self.tradeCashToLeverageText.setColor('#ffffff');
         });
@@ -189,7 +189,7 @@ export default class Game extends Phaser.Scene {
             }
         });
         // power to cash
-        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235A \u21E2 1$']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive();
+        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235A \u21E2 1$']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
         this.tradePowerToCashText.on('pointerover', function (pointer) {
             self.tradePowerToCashText.setColor('#ffffff');
         });
@@ -207,7 +207,7 @@ export default class Game extends Phaser.Scene {
 
         // end turn button/text:
         // creates text
-        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Balthazar').setColor('#fbbb21').setInteractive(); 
+        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive(); 
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
             self.startText.setColor('#ffffff');
