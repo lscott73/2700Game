@@ -9,7 +9,7 @@ import CardData from '../helpers/carddata.js';
 import Zone from '../helpers/zone.js';
 import Dealer from '../helpers/dealer.js';
 
-// unicode: power: 235A, leverage: 23C8, cash: 0024, arrow: 21E2
+// unicode: power: 235F, leverage: 23C8, cash: 0024, arrow: 21E2
 
 
 const sizes = {
@@ -163,7 +163,7 @@ export default class Game extends Phaser.Scene {
 
         // trade buttons/text:
         // leverage to power
-        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235A']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235F']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
         this.tradeLeverageToPowerText.on('pointerover', function (pointer) {
             self.tradeLeverageToPowerText.setColor('#ffffff');
         });
@@ -191,7 +191,7 @@ export default class Game extends Phaser.Scene {
             }
         });
         // power to cash
-        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235A \u21E2 1$']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235F \u21E2 1$']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
         this.tradePowerToCashText.on('pointerover', function (pointer) {
             self.tradePowerToCashText.setColor('#ffffff');
         });
@@ -409,8 +409,10 @@ export default class Game extends Phaser.Scene {
         this.discardText.setText("DISCARD: " + this.playerDiscard.length);
 
 
-        this.powerText.setText("\u235A " + this.powerPool);
+        this.powerText.setText("\u235F " + this.powerPool);
         this.leverageText.setText("\u23C8 " + this.leveragePool);
         this.cashText.setText("$ " + this.cashPool);
+
+
     }
 }
