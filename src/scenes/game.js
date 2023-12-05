@@ -36,17 +36,17 @@ export default class Game extends Phaser.Scene {
         //this.add.image(500, 350, 'apple');
 
         // center board zone, not really a zone
-        this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
+        //this.startText = this.add.text(200, 170, ['Employees and Lawsuits Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
         // player board zone
         this.boardZone = new Zone(this);
         this.playerBoardZone = this.boardZone.renderZone(500, 380, 700, 200);
         this.outline = this.boardZone.renderOutline(this.playerBoardZone);
-        this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
+        //this.startText = this.add.text(200, 380, ['Player Cards Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
         // player hand zone
         this.handZone = new Zone(this);
         this.playerHandZone = this.handZone.renderZone(500, 590, 700, 200);
         this.outline = this.handZone.renderOutline(this.playerHandZone);
-        this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
+        //this.startText = this.add.text(200, 590, ['Player Hand Here']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#0000000'); 
 
         this.dealer = new Dealer(this);
 
