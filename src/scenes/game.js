@@ -486,6 +486,7 @@ export default class Game extends Phaser.Scene {
         // here are some temp examples:
         this.deckText.setText("DECK: " + this.playerDeck.length);
         this.discardText.setText("DISCARD: " + this.playerDiscard.length);
+        this.turnCounterText.setText("TURN " + this.turnCounter);
 
 
         this.powerText.setText("\u235F " + this.powerPool);
