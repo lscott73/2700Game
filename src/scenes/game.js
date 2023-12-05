@@ -134,7 +134,9 @@ export default class Game extends Phaser.Scene {
             this.centerDeck.push(new CardData(11, 0, 3, 0, 6, 0, 'magentaCardFront', 0)); // Polifishian7
             this.centerDeck.push(new CardData(13, 0, 6, 0, 6, 0, 'magentaCardFront', 0)); // Polifishian8
             this.centerDeck.push(new CardData(0, 5, 0, 0, 5, 3, 'magentaCardFront', 0)); // Lawsuit - Libel
-            this.centerDeck.push(new CardData(0, 10, 0, 0, 10, 5, 'magentaCardFront', 0)); // Lawsuit - RICO 
+
+            this.centerDeck.push(new CardData(0, 10, 0, 0, 10, 5, 'magentaCardFront', 0)); // Lawsuit - RICO
+
             this.centerDeck.push(new CardData(0, 1, 0, 0, 1, 1, 'magentaCardFront', 0)); // Lawsuit - Merger
             this.centerDeck.push(new CardData(0, 2, 0, 0, 2, 1, 'magentaCardFront', 0)); // Lawsuit - Slander
             this.centerDeck.push(new CardData(0, 3, 0, 0, 3, 2, 'magentaCardFront', 0)); // Lawsuit - Wrongful Termination
@@ -205,9 +207,11 @@ export default class Game extends Phaser.Scene {
 
 
 
+
         // end turn button/text:
         // creates text
-        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive(); 
+        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
             self.startText.setColor('#ffffff');
@@ -251,7 +255,7 @@ export default class Game extends Phaser.Scene {
 
 
             // start of turn actions:
-            
+
             // deal cards to player
             if (self.playerDeck.length < 5) {
                 let deckAmount = self.playerDeck.length;
