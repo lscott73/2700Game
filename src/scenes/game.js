@@ -1,4 +1,4 @@
-import BackgroundImg from '../assets/bg.png'
+import BackgroundImg from '../assets/backdrop.png'
 import CyanCardBack from '../assets/CyanCardBack.png';
 import ExampleCardFront from '../assets/ExampleCardFront.png';
 import MagentaCardBack from '../assets/MagentaCardBack.png';
@@ -52,8 +52,8 @@ export default class Game extends Phaser.Scene {
 
 
         // deckText for tracking deck size
-        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
-        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.deckText = this.add.text(10, 670, ['DECK: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
+        this.discardText = this.add.text(860, 670, ['DISCARD: 0']).setFontSize(24).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
 
 
         // create decks:
@@ -81,16 +81,16 @@ export default class Game extends Phaser.Scene {
         this.leveragePool = 0;
         this.cashPool = 0;
         // create text for player pools:
-        this.powerText = this.add.text(890, 280, this.powerPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#5ce1e6');
-        this.leverageText = this.add.text(890, 360, this.leveragePool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#ff3131');
-        this.cashText = this.add.text(890, 440, this.cashPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#7ed957');
+        this.powerText = this.add.text(900, 280, this.powerPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#5ce1e6');
+        this.leverageText = this.add.text(900, 360, this.leveragePool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#ff3131');
+        this.cashText = this.add.text(900, 440, this.cashPool).setFontSize(32).setFontFamily('Alegreya SC').setColor('#7ed957');
 
         // create discarding array:
         this.discardList = [];
 
         // creat a turn counter, for funsies
         this.turnCounter = 1;
-        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21');
+        this.turnCounterText = this.add.text(10, 10, "TURN " +this.turnCounter).setFontSize(32).setFontFamily('Alegreya SC').setColor('#000000');
 
 
         // create cardData objects:
@@ -163,12 +163,12 @@ export default class Game extends Phaser.Scene {
 
         // trade buttons/text:
         // leverage to power
-        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235F']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.tradeLeverageToPowerText = this.add.text(15, 280, ['3\u23C8 \u21E2 1\u235F']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
         this.tradeLeverageToPowerText.on('pointerover', function (pointer) {
             self.tradeLeverageToPowerText.setColor('#ffffff');
         });
         this.tradeLeverageToPowerText.on('pointerout', function (pointer) {
-            self.tradeLeverageToPowerText.setColor('#fbbb21');
+            self.tradeLeverageToPowerText.setColor('#000000');
         });
         this.tradeLeverageToPowerText.on('pointerdown', function (pointer) {
             if (self.leveragePool >= 3) {
@@ -177,12 +177,12 @@ export default class Game extends Phaser.Scene {
             }
         });
         // cash to leverage
-        this.tradeCashToLeverageText = this.add.text(15, 360, ['3$ \u21E2 1\u23C8']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.tradeCashToLeverageText = this.add.text(15, 360, ['3$ \u21E2 1\u23C8']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
         this.tradeCashToLeverageText.on('pointerover', function (pointer) {
             self.tradeCashToLeverageText.setColor('#ffffff');
         });
         this.tradeCashToLeverageText.on('pointerout', function (pointer) {
-            self.tradeCashToLeverageText.setColor('#fbbb21');
+            self.tradeCashToLeverageText.setColor('#000000');
         });
         this.tradeCashToLeverageText.on('pointerdown', function (pointer) {
             if (self.cashPool >= 3) {
@@ -191,12 +191,12 @@ export default class Game extends Phaser.Scene {
             }
         });
         // power to cash
-        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235F \u21E2 1$']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.tradePowerToCashText = this.add.text(15, 440, ['3\u235F \u21E2 1$']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
         this.tradePowerToCashText.on('pointerover', function (pointer) {
             self.tradePowerToCashText.setColor('#ffffff');
         });
         this.tradePowerToCashText.on('pointerout', function (pointer) {
-            self.tradePowerToCashText.setColor('#fbbb21');
+            self.tradePowerToCashText.setColor('#000000');
         });
         this.tradePowerToCashText.on('pointerdown', function (pointer) {
             if (self.powerPool >= 3) {
@@ -210,7 +210,7 @@ export default class Game extends Phaser.Scene {
 
         // end turn button/text:
         // creates text
-        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#fbbb21').setInteractive();
+        this.startText = this.add.text(885, 550, [' END \nTURN']).setFontSize(32).setFontFamily('Alegreya SC').setColor('#000000').setInteractive();
 
         // color change while hovering over text
         this.startText.on('pointerover', function (pointer) {
@@ -218,7 +218,7 @@ export default class Game extends Phaser.Scene {
         });
         // color change back to original
         this.startText.on('pointerout', function (pointer) {
-            self.startText.setColor('#fbbb21');
+            self.startText.setColor('#000000');
         });
 
         // end turn and start new turn!
