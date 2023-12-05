@@ -3,7 +3,7 @@ const sizes = {
     width: 1000,
     height: 700
 }
-import BackgroundImg from '../assets/GameOverScreen.png';
+import BackgroundImg from '../assets/Lose.png';
 
 export default class loss extends Phaser.Scene {
     constructor() {
