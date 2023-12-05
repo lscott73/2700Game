@@ -3,7 +3,7 @@ const sizes = {
     width: 1000,
     height: 700
 }
-import BackgroundImg from 'src/assets/InstructionsScreen.png';
+import BackgroundImg from '../assets/GameScreen.png';
 
 export default class loadscreen extends Phaser.Scene {
     constructor() {
@@ -11,27 +11,23 @@ export default class loadscreen extends Phaser.Scene {
     }
 
     preload() {
+
         this.load.image('gameScreen', BackgroundImg);
-        let loadingBar = this.add.graphics({
-            fillStyle : {
-                color: 0xffffff
-            }
-        })
-
-        this.load.on("progress", (percent) =>{
-            loadingBar.clear();
-            loadingBar.fillRect(0, this.game.renderer.height / 2, this.game.renderer.width * percent, 50);
-            console.log(percent);
-        })
-
-        this.load.on("complete", () => {
-            this.scene.start('instructions');
-        })
-
-
     }
     create() {
-        this.scene.start('instructions');
+        this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2, 'gameScreen');
+        const startPoint = {
+            x: this.game.renderer.width / 2,
+            y: this.game.renderer.height * 0.55
+        };
+
+        const startRadius = 200;
+        let startCircle = this.add.circle(startPoint.x, startPoint.y, startRadius, 0x0000ff, 0);
+        startCircle.setInteractive();
+
+        startCircle.on('pointerdown', () => {
+            this.scene.start('instructions')
+        })
 
     }
 
