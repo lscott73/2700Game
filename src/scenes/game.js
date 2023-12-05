@@ -1,8 +1,4 @@
 import BackgroundImg from '../assets/backdrop.png'
-import CyanCardBack from '../assets/CyanCardBack.png';
-import ExampleCardFront from '../assets/ExampleCardFront.png';
-import MagentaCardBack from '../assets/MagentaCardBack.png';
-import MagentaCardFront from '../assets/MagentaCardFront.png';
 
 // employee cards
 import EMP1 from '../assets/EMP1.png';
@@ -47,9 +43,6 @@ import LAWslander from '../assets/LAWslander.png';
 import LAWtort from '../assets/LAWtort.png';
 import LAWwrongful from '../assets/LAWwrongful.png';
 
-
-
-
 import Card from '../helpers/card.js';
 import CardData from '../helpers/carddata.js';
 import Zone from '../helpers/zone.js';
@@ -70,10 +63,6 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         this.load.image('background', BackgroundImg);
-        this.load.image('cyanCardBack', CyanCardBack);
-        this.load.image('cxampleCardFront', ExampleCardFront);
-        this.load.image('magentaCardBack', MagentaCardBack);
-        this.load.image('magentaCardFront', MagentaCardFront);
 
         // employee cards
         this.load.image('EMP1', EMP1);
