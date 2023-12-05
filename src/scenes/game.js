@@ -3,7 +3,7 @@ import BackgroundImg from '../assets/backdrop.png'
 // employee cards
 import EMP1 from '../assets/EMP1.png';
 import EMP2 from '../assets/EMP2.png';
-import EMP001 from '../assets/EMP002.png';
+import EMP001 from '../assets/EMP001.png';
 import EMP002 from '../assets/EMP002.png';
 import EMP011 from '../assets/EMP011.png';
 import EMP020 from '../assets/EMP020.png';
@@ -68,7 +68,7 @@ export default class Game extends Phaser.Scene {
         // employee cards
         this.load.image('EMP1', EMP1);
         this.load.image('EMP2', EMP2);
-        this.load.image('EMP001', EMP002);
+        this.load.image('EMP001', EMP001);
         this.load.image('EMP002', EMP002);
         this.load.image('EMP011', EMP011);
         this.load.image('EMP020', EMP020);
